@@ -1,7 +1,7 @@
 # Личный проект «Readme»
 
 * Студент: [Владислав Несвит](https://up.htmlacademy.ru/nodejs-2-individual/2/user/1486707).
-* Наставник: `Неизвестно`.
+* Наставник: [Евгений Наумов] (https://htmlacademy.ru/profile/naumov_evg).
 
 ---
 
