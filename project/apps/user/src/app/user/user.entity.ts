@@ -1,9 +1,9 @@
 import { compare, genSalt, hash } from 'bcrypt';
 import { User, UserRole } from '@project/shared/app/types';
 import { Entity } from '@project/shared/core';
-import { SALT_ROUNDS } from './author.constants';
+import { SALT_ROUNDS } from './user.constants';
 
-export class AuthorEntity implements User, Entity<string> {
+export class UserEntity implements User, Entity<string> {
   public id?: string;
   public email: string;
   public name: string;
@@ -11,8 +11,8 @@ export class AuthorEntity implements User, Entity<string> {
   public passwordHash: string;
   public role: UserRole;
 
-  constructor(author: User) {
-    this.populate(author);
+  constructor(user: User) {
+    this.populate(user);
   }
 
   public toPOJO() {
@@ -33,7 +33,7 @@ export class AuthorEntity implements User, Entity<string> {
     this.avatar = data.avatar;
   }
 
-  public async setPassword(password: string): Promise<AuthorEntity> {
+  public async setPassword(password: string): Promise<UserEntity> {
     const salt = await genSalt(SALT_ROUNDS);
     this.passwordHash = await hash(password, salt);
     return this;
