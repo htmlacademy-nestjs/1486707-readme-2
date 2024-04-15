@@ -7,4 +7,5 @@ export interface User {
   avatar?: string;
   role: UserRole;
   passwordHash: string;
+  subscriptions?: string[];
 }

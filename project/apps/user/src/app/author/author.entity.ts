@@ -1,15 +1,16 @@
 import { compare, genSalt, hash } from 'bcrypt';
 import { User, UserRole } from '@project/shared/app/types';
 import { Entity } from '@project/shared/core';
-import { SALT_ROUNDS } from './user.constants';
+import { SALT_ROUNDS } from './author.constants';
 
-export class UserEntity implements User, Entity<string> {
+export class AuthorEntity implements User, Entity<string> {
   public id?: string;
   public email: string;
   public name: string;
   public avatar?: string;
   public passwordHash: string;
   public role: UserRole;
+  public subscriptions?: string[];
 
   constructor(user: User) {
     this.populate(user);
@@ -23,6 +24,7 @@ export class UserEntity implements User, Entity<string> {
       avatar: this.avatar,
       passwordHash: this.passwordHash,
       role: this.role,
+      subscriptions: this.subscriptions,
     };
   }
 
@@ -33,7 +35,7 @@ export class UserEntity implements User, Entity<string> {
     this.avatar = data.avatar;
   }
 
-  public async setPassword(password: string): Promise<UserEntity> {
+  public async setPassword(password: string): Promise<AuthorEntity> {
     const salt = await genSalt(SALT_ROUNDS);
     this.passwordHash = await hash(password, salt);
     return this;

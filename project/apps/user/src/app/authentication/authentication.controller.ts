@@ -1,8 +1,8 @@
-import { Controller, Body, Post, Get, Param, HttpStatus } from '@nestjs/common';
+import { Controller, Body, Post, HttpStatus } from '@nestjs/common';
 import { AuthenticationService } from './authentication.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { fillDto } from '@project/shared/helpers';
-import { UserRdo } from './rdo/user.rdo';
+import { AuthorRdo } from '../author/rdo/author.rdo';
 import { LoginUserDto } from './dto/login-user.dto';
 import { LoggedUserRdo } from './rdo/logged-user.rdo';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
@@ -19,7 +19,7 @@ export class AuthenticationController {
   @Post('register')
   public async create(@Body() dto: CreateUserDto) {
     const newUser = await this.authService.register(dto);
-    return fillDto(UserRdo, newUser.toPOJO());
+    return fillDto(AuthorRdo, newUser.toPOJO());
   }
 
   @ApiResponse({
@@ -35,16 +35,5 @@ export class AuthenticationController {
   public async login(@Body() dto: LoginUserDto) {
     const verifiedUser = await this.authService.verifyUser(dto);
     return fillDto(LoggedUserRdo, verifiedUser.toPOJO());
-  }
-
-  @ApiResponse({
-    type: UserRdo,
-    status: HttpStatus.OK,
-    description: 'User found'
-  })
-  @Get(':id')
-  public async show(@Param('id') id: string) {
-    const existUser = await this.authService.getUser(id);
-    return fillDto(UserRdo, existUser.toPOJO());
   }
 }
