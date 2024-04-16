@@ -1,12 +1,5 @@
 import { ArticleType } from './article-type.enum';
 
-export interface GeneralArticle {
-  id?: string;
-  authorId: string;
-  type: ArticleType;
-  tags?: string[];
-}
-
 export interface VideoArticleData {
   title: string;
   link: string;
@@ -32,19 +25,18 @@ export interface LinkArticleData {
   description?: string;
 }
 
-export interface VideoArticle extends GeneralArticle, VideoArticleData {}
+export type ArticleData =
+  | VideoArticleData
+  | TextArticleData
+  | QuoteArticleData
+  | PhotoArticleData
+  | LinkArticleData;
 
-export interface TextArticle extends GeneralArticle, TextArticleData {}
-
-export interface QuoteArticle extends GeneralArticle, QuoteArticleData {}
-
-export interface PhotoArticle extends GeneralArticle, PhotoArticleData {}
-
-export interface LinkArticle extends GeneralArticle, LinkArticleData {}
-
-export type Article =
-  | VideoArticle
-  | TextArticle
-  | QuoteArticle
-  | PhotoArticle
-  | LinkArticle;
+export interface Article {
+  id?: string;
+  authorId: string;
+  type: ArticleType;
+  tags?: string[];
+  data: ArticleData;
+  isRepost?: boolean;
+}

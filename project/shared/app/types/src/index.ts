@@ -3,3 +3,4 @@ export * from './lib/user.interface';
 export * from './lib/comment.interface';
 export * from './lib/article-type.enum';
 export * from './lib/article.interface';
+export * from './lib/file-vault-item.interface';

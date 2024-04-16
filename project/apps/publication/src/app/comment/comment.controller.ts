@@ -3,7 +3,7 @@ import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { fillDto } from '@project/shared/helpers';
 import { CommentService } from './comment.service';
 import { CommentRdo } from './rdo/comment.rdo';
-import { CreateCommentDto } from './dto/create-comment';
+import { CreateCommentDto } from './dto/create-comment.dto';
 
 @ApiTags('comments')
 @Controller('comment')
