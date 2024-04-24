@@ -1,0 +1,9 @@
+{
+  "name": "shared-config-user",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "shared/config/user/src",
+  "projectType": "library",
+  "tags": [],
+  "// targets": "to see all targets run: nx show project shared-config-user --web",
+  "targets": {}
+}
