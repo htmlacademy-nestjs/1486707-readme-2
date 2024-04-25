@@ -35,6 +35,10 @@ export class AuthorEntity implements User, Entity<string> {
     this.avatar = data.avatar;
   }
 
+  static fromObject(data: User): AuthorEntity {
+    return new AuthorEntity(data);
+  }
+
   public async setPassword(password: string): Promise<AuthorEntity> {
     const salt = await genSalt(SALT_ROUNDS);
     this.passwordHash = await hash(password, salt);

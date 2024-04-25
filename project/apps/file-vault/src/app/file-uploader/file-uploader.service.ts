@@ -1,11 +1,11 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { FileVaultRepository } from './app.repository';
-import { FILE_NOT_FOUND } from './app.constants';
-import { CreateFileItemDto } from './dto/create-file-item.dto';
-import { FileVaultEntity } from './app.entity';
+import { FileVaultRepository } from './file-uploader.repository';
+import { FILE_NOT_FOUND } from './file-uploader.constants';
+import { CreateFileItemDto } from '../dto/create-file-item.dto';
+import { FileVaultEntity } from './file-uploader.entity';
 
 @Injectable()
-export class AppService {
+export class FileUploaderService {
   constructor(private readonly fileVaultRepository: FileVaultRepository) {}
 
   public async getFile(id: string) {

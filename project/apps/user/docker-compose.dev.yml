@@ -6,9 +6,9 @@ services:
     container_name: readme.user.mongo
 
     environment:
+      MONGO_INITDB_DATABASE: readme-user
       MONGO_INITDB_ROOT_USERNAME: admin
       MONGO_INITDB_ROOT_PASSWORD: test
-      MONGO_INITDB_DATABASE: readme-user
 
     ports:
       - 27017:27017

@@ -1,12 +1,15 @@
 import { Module } from '@nestjs/common';
 
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
-import { FileVaultRepository } from './app.repository';
+import { FileUploaderController } from './file-uploader/file-uploader.controller';
+import { FileUploaderService } from './file-uploader/file-uploader.service';
+import { FileUploaderRepository } from './file-uploader/file-uploader.repository';
+import { ConfigFileVaultModule, getMongooseOptions } from '@project/shared/config/file-vault';
+import { MongooseModule } from '@nestjs/mongoose';
 
 @Module({
-  controllers: [AppController],
-  providers: [AppService, FileVaultRepository],
-  exports: [FileVaultRepository],
+  imports: [ConfigFileVaultModule, MongooseModule.forRootAsync(getMongooseOptions())],
+  controllers: [FileUploaderController],
+  providers: [FileUploaderService, FileUploaderRepository],
+  exports: [FileUploaderRepository],
 })
 export class AppModule {}

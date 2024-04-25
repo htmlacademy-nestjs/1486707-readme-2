@@ -9,13 +9,13 @@ import {
 } from '@nestjs/common';
 import { fillDto } from '@project/shared/helpers';
 
-import { AppService } from './app.service';
+import { AppService } from './file-uploader.service';
 import { ApiResponse } from '@nestjs/swagger';
 import { FileItemRdo } from './rdo/file-item.rdo';
-import { CreateFileItemDto } from './dto/create-file-item.dto';
+import { CreateFileItemDto } from '../dto/create-file-item.dto';
 
 @Controller()
-export class AppController {
+export class FileUploaderController {
   constructor(private readonly appService: AppService) {}
 
   @ApiResponse({
