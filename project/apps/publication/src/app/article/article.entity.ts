@@ -18,6 +18,7 @@ export class ArticleEntity implements Article, Entity<string> {
     this.type = data.type;
     this.tags = data.tags;
     this.data = data.data;
+    this.isRepost = data.isRepost;
   }
 
   public toPOJO() {

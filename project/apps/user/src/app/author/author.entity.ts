@@ -33,6 +33,12 @@ export class AuthorEntity implements User, Entity<string> {
     this.email = data.email;
     this.role = data.role;
     this.avatar = data.avatar;
+    this.passwordHash = data.passwordHash;
+    this.subscriptions = data.subscriptions;
+  }
+
+  static fromObject(data: User): AuthorEntity {
+    return new AuthorEntity(data);
   }
 
   public async setPassword(password: string): Promise<AuthorEntity> {

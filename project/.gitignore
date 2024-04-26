@@ -33,9 +33,13 @@ npm-debug.log
 yarn-error.log
 testem.log
 /typings
+/db
 
 # System Files
 .DS_Store
 Thumbs.db
 
 .nx/cache
+
+# Environments
+.env
