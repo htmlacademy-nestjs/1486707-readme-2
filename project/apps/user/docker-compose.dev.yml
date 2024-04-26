@@ -1,4 +1,4 @@
-version: '4.25'
+version: '3.8'
 services:
   readme.user.mongo:
     image: mongo:4.4

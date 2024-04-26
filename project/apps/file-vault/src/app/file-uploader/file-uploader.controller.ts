@@ -9,14 +9,13 @@ import {
 } from '@nestjs/common';
 import { fillDto } from '@project/shared/helpers';
 
-import { AppService } from './file-uploader.service';
+import { FileUploaderService } from './file-uploader.service';
 import { ApiResponse } from '@nestjs/swagger';
 import { FileItemRdo } from './rdo/file-item.rdo';
-import { CreateFileItemDto } from '../dto/create-file-item.dto';
 
 @Controller()
 export class FileUploaderController {
-  constructor(private readonly appService: AppService) {}
+  constructor(private readonly fileUploaderService: FileUploaderService) {}
 
   @ApiResponse({
     type: FileItemRdo,
@@ -25,18 +24,8 @@ export class FileUploaderController {
   })
   @Get(':id')
   public async show(@Param('id') id: string) {
-    const file = await this.appService.getFile(id);
+    const file = await this.fileUploaderService.getFile(id);
     return fillDto(FileItemRdo, file.toPOJO());
-  }
-
-  @ApiResponse({
-    status: HttpStatus.CREATED,
-    description: 'A new file item has been successfully created',
-  })
-  @Post('create')
-  public async create(@Body() dto: CreateFileItemDto) {
-    const newFile = await this.appService.saveFile(dto);
-    return fillDto(FileItemRdo, newFile.toPOJO());
   }
 
   @ApiResponse({
@@ -45,6 +34,6 @@ export class FileUploaderController {
   })
   @Delete('/delete/:id')
   public async delete(@Param('id') id: string) {
-    this.appService.deleteFile(id);
+    await this.fileUploaderService.deleteFile(id);
   }
 }
