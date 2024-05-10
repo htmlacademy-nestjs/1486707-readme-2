@@ -1,8 +1,8 @@
 import { Tag } from '@project/shared/app/types';
 import { Entity } from '@project/shared/core';
 
-export class ArticleTagEntity implements Tag, Entity<string> {
-  public id?;
+export class PublicationTagEntity implements Tag, Entity<string, Tag> {
+  public id?: string;
   public title: string;
   public createdAt?: Date;
   public updatedAt?: Date;
@@ -22,12 +22,16 @@ export class ArticleTagEntity implements Tag, Entity<string> {
     this.createdAt = data.createdAt;
   }
 
-  public toPOJO(): Record<string, unknown> {
+  public toPOJO(): Tag {
     return {
       id: this.id,
       title: this.title,
       updatedAt: this.updatedAt,
       createdAt: this.createdAt,
     };
+  }
+
+  static fromObject(data: Tag): PublicationTagEntity {
+    return new PublicationTagEntity(data);
   }
 }
