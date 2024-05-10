@@ -1,0 +1,55 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../../../../node_modules/.prisma/client"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Article {
+  id        String    @id @default(uuid())
+  authorId  String    @map("author_id")
+  data      String
+  type      String
+  isRepost  Boolean   @map("is_repost")
+  likes     String[]
+  tags      Tag[]
+  comments  Comment[]
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+
+  @@index([authorId])
+  @@map("articles")
+}
+
+model Tag {
+  id        String    @id @default(uuid())
+  title     String
+  articles  Article[]
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+
+  @@index([title])
+  @@map("tags")
+}
+
+model Comment {
+  id        String   @id @default(uuid())
+  articleId String   @map("publication_id")
+  article   Article  @relation(fields: [articleId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  authorId  String   @map("author_id")
+  text      String
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@index([articleId])
+  @@map("comments")
+}

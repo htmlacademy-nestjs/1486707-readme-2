@@ -21,7 +21,10 @@
       ],
       "@project/shared/config/user": ["shared/config/user/src/index.ts"],
       "@project/shared/core": ["shared/core/src/index.ts"],
-      "@project/shared/helpers": ["shared/helpers/src/index.ts"]
+      "@project/shared/helpers": ["shared/helpers/src/index.ts"],
+      "@project/shared/publication/models": [
+        "shared/publication/models/src/index.ts"
+      ]
     }
   },
   "exclude": ["node_modules", "tmp"]

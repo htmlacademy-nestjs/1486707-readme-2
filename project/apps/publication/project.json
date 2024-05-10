@@ -19,6 +19,47 @@
           "buildTarget": "publication:build:production"
         }
       }
+    },
+    "docker:compose": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "docker compose --file apps/publication/docker-compose.dev.yml --env-file apps/publication/publication.env --project-name 'readme_publication' up -d"
+      }
+    },
+    "db:lint": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "npx prisma validate --schema ./schema.prisma",
+        "cwd": "shared/publication/models/prisma"
+      }
+    },
+    "db:migrate": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "npx prisma migrate dev --schema ./schema.prisma --skip-generate --skip-seed",
+        "cwd": "shared/publication/models/prisma"
+      }
+    },
+    "db:reset": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "npx prisma migrate reset --schema ./schema.prisma --force --skip-generate --skip-seed",
+        "cwd": "shared/publication/models/prisma"
+      }
+    },
+    "db:generate": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "npx prisma generate --schema ./schema.prisma",
+        "cwd": "shared/publication/models/prisma"
+      }
+    },
+    "db:seed": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "npx ts-node seed.ts",
+        "cwd": "shared/publication/models/prisma"
+      }
     }
   }
 }

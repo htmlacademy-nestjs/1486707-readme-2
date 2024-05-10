@@ -1,4 +1,5 @@
 import { ArticleType } from './article-type.enum';
+import { Tag } from './tag.interface';
 
 export interface VideoArticleData {
   title: string;
@@ -36,7 +37,10 @@ export interface Article {
   id?: string;
   authorId: string;
   type: ArticleType;
-  tags?: string[];
+  tags?: Tag[];
+  likes?: string[];
   data: ArticleData;
   isRepost?: boolean;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
