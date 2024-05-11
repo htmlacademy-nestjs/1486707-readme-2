@@ -40,13 +40,13 @@ export class PublicationTagRepository extends BasePostgresRepository<
 
   public async findByTitle(title: string): Promise<PublicationTagEntity> {
     const document = await this.client.tag.findFirst({
-        where: {
-            title,
-        }
+      where: {
+        title,
+      },
     });
 
     if (!document) {
-        throw new NotFoundException(`Tag with title ${title} not found.`);
+      throw new NotFoundException(`Tag with title ${title} not found.`);
     }
 
     return this.createEntityFromDocument(document);

@@ -1,11 +1,11 @@
-import { Article, ArticleData, ArticleType } from '@project/shared/app/types';
+import { Article, ArticleData, ArticleType, Tag } from '@project/shared/app/types';
 import { Entity } from '@project/shared/core';
 
-export class ArticleEntity implements Article, Entity<string> {
+export class ArticleEntity implements Article, Entity<string, Article> {
   public id?: string;
   public authorId: string;
   public type: ArticleType;
-  public tags?: string[];
+  public tags?: Tag[];
   public data: ArticleData;
   public isRepost: boolean;
 
@@ -21,7 +21,7 @@ export class ArticleEntity implements Article, Entity<string> {
     this.isRepost = data.isRepost;
   }
 
-  public toPOJO() {
+  public toPOJO(): Article {
     return {
       authorId: this.authorId,
       type: this.type,
@@ -29,5 +29,9 @@ export class ArticleEntity implements Article, Entity<string> {
       data: this.data,
       isRepost: this.isRepost,
     };
+  }
+
+  static fromObject(data: Article): ArticleEntity {
+    return new ArticleEntity(data);
   }
 }

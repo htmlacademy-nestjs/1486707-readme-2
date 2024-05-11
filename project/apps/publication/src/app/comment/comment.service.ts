@@ -7,16 +7,22 @@ import { CommentEntity } from './comment.entity';
 export class CommentService {
   constructor(private readonly commentRepository: CommentRepository) {}
 
-  public async createComment(dto: CreateCommentDto) {
+  public async createComment(dto: CreateCommentDto): Promise<CommentEntity> {
     const newComment = await new CommentEntity(dto);
     return this.commentRepository.save(newComment);
   }
 
-  public async getCommentsForArticle(id: string) {
-    return await this.commentRepository.getCommentsForPublication(id);
+  public async getCommentById(id: string): Promise<CommentEntity> {
+    return await this.commentRepository.findById(id);
   }
 
-  public async deleteCommentsForArticle(id: string) {
-    await this.commentRepository.deleteCommentsByPublicationId(id);
+  public async deleteCommentById(id: string): Promise<void> {
+    await this.commentRepository.deleteById(id);
+  }
+
+  public async getCommentsByArticleId(
+    articleId: string
+  ): Promise<CommentEntity[]> {
+    return await this.commentRepository.findByArticleId(articleId);
   }
 }

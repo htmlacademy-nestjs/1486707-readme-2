@@ -1,4 +1,12 @@
-import { Body, Controller, Delete, Get, HttpStatus, Param, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  HttpStatus,
+  Param,
+  Post,
+} from '@nestjs/common';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { fillDto } from '@project/shared/helpers';
 import { CommentService } from './comment.service';
@@ -17,9 +25,8 @@ export class CommentController {
   })
   @Get(':id')
   public async show(@Param('id') id: string) {
-    const publicationComments = await this.commentService.getCommentsForArticle(
-      id
-    );
+    const publicationComments =
+      await this.commentService.getCommentsByArticleId(id);
     return publicationComments.map((comment) =>
       fillDto(CommentRdo, comment.toPOJO())
     );
@@ -27,7 +34,7 @@ export class CommentController {
 
   @ApiResponse({
     status: HttpStatus.CREATED,
-    description: 'A new comment has been successfully created'
+    description: 'A new comment has been successfully created',
   })
   @Post('create')
   public async create(@Body() dto: CreateCommentDto) {
@@ -37,10 +44,10 @@ export class CommentController {
 
   @ApiResponse({
     status: HttpStatus.OK,
-    description: 'Publication comments are deleted'
+    description: 'Publication comments are deleted',
   })
   @Delete('/delete/:id')
   public async delete(@Param('id') id: string) {
-    this.commentService.deleteCommentsForArticle(id);
+    this.commentService.deleteCommentById(id);
   }
 }

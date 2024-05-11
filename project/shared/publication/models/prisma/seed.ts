@@ -21,7 +21,7 @@ function getArticles() {
     {
       id: FIRST_ARTICLE_UUID,
       authorId: FIRST_AUTHOR_ID,
-      data: 'Test data 1',
+      title: 'Test data title 1',
       type: 'video',
       isRepost: false,
       likes: [],
@@ -32,7 +32,7 @@ function getArticles() {
     {
       id: SECOND_ARTICLE_UUID,
       authorId: SECOND_AUTHOR_ID,
-      data: 'Test data 2',
+      title: 'Test data title 2',
       type: 'text',
       isRepost: false,
       likes: [],
@@ -74,7 +74,7 @@ async function seedDb(prismaClient: PrismaClient) {
       create: {
         id: article.id,
         authorId: article.authorId,
-        data: article.data,
+        title: article.title,
         type: article.type,
         isRepost: article.isRepost,
         likes: article.likes,

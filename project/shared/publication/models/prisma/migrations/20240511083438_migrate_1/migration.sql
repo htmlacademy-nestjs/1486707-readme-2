@@ -2,7 +2,14 @@
 CREATE TABLE "articles" (
     "id" TEXT NOT NULL,
     "author_id" TEXT NOT NULL,
-    "data" TEXT NOT NULL,
+    "title" TEXT,
+    "link" TEXT,
+    "video" TEXT,
+    "text" TEXT,
+    "preview" TEXT,
+    "quoteAuthor" TEXT,
+    "photo" TEXT,
+    "description" TEXT,
     "type" TEXT NOT NULL,
     "is_repost" BOOLEAN NOT NULL,
     "likes" TEXT[],
@@ -25,7 +32,7 @@ CREATE TABLE "tags" (
 -- CreateTable
 CREATE TABLE "comments" (
     "id" TEXT NOT NULL,
-    "publication_id" TEXT NOT NULL,
+    "article_id" TEXT NOT NULL,
     "author_id" TEXT NOT NULL,
     "text" TEXT NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -47,7 +54,7 @@ CREATE INDEX "articles_author_id_idx" ON "articles"("author_id");
 CREATE INDEX "tags_title_idx" ON "tags"("title");
 
 -- CreateIndex
-CREATE INDEX "comments_publication_id_idx" ON "comments"("publication_id");
+CREATE INDEX "comments_article_id_idx" ON "comments"("article_id");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "_ArticleToTag_AB_unique" ON "_ArticleToTag"("A", "B");
@@ -56,7 +63,7 @@ CREATE UNIQUE INDEX "_ArticleToTag_AB_unique" ON "_ArticleToTag"("A", "B");
 CREATE INDEX "_ArticleToTag_B_index" ON "_ArticleToTag"("B");
 
 -- AddForeignKey
-ALTER TABLE "comments" ADD CONSTRAINT "comments_publication_id_fkey" FOREIGN KEY ("publication_id") REFERENCES "articles"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "comments" ADD CONSTRAINT "comments_article_id_fkey" FOREIGN KEY ("article_id") REFERENCES "articles"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "_ArticleToTag" ADD CONSTRAINT "_ArticleToTag_A_fkey" FOREIGN KEY ("A") REFERENCES "articles"("id") ON DELETE CASCADE ON UPDATE CASCADE;
