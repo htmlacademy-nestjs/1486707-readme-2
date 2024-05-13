@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client';
+import { ArticleType, PrismaClient } from '@prisma/client';
 
 const FIRST_TAG_UUID = '39614113-7ad5-45b6-8093-06455437e1e2';
 const SECOND_TAG_UUID = 'efd775e2-df55-4e0e-a308-58249f5ea202';
@@ -22,7 +22,7 @@ function getArticles() {
       id: FIRST_ARTICLE_UUID,
       authorId: FIRST_AUTHOR_ID,
       title: 'Test data title 1',
-      type: 'video',
+      type: 'video' as ArticleType,
       isRepost: false,
       likes: [],
       tags: {
@@ -33,7 +33,7 @@ function getArticles() {
       id: SECOND_ARTICLE_UUID,
       authorId: SECOND_AUTHOR_ID,
       title: 'Test data title 2',
-      type: 'text',
+      type: 'text' as ArticleType,
       isRepost: false,
       likes: [],
       tags: {

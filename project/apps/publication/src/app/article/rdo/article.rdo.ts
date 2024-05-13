@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { ApiProperty } from '@nestjs/swagger';
-import { ArticleType, ArticleData } from '@project/shared/app/types';
+import { ArticleData } from '@project/shared/app/types';
 import { Expose } from 'class-transformer';
 
 @Injectable()
@@ -18,13 +18,6 @@ export class ArticleRdo {
   })
   @Expose()
   public authorId: string;
-
-  @ApiProperty({
-    description: 'Article type',
-    example: 'video',
-  })
-  @Expose()
-  public type: ArticleType;
 
   @ApiProperty({
     description: 'Article tags list',

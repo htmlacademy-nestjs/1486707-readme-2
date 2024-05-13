@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { ArticleType } from '@project/shared/app/types';
 
-export class CreateArticleDto {
+export class UpdateArticleDto {
       @ApiProperty({
         description: 'Article author id',
         example: 'a12',

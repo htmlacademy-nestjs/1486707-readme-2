@@ -73,4 +73,16 @@ export class PublicationTagRepository extends BasePostgresRepository<
       },
     });
   }
+
+  public async findByIds(ids: string[]): Promise<PublicationTagEntity[]> {
+    const records = await this.client.tag.findMany({
+      where: {
+        id: {
+          in: ids
+        }
+      }
+    })
+
+    return records.map((record) => this.createEntityFromDocument(record));
+  }
 }

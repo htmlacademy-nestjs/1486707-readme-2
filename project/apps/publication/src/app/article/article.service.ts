@@ -3,10 +3,12 @@ import { ArticleRepository } from './article.repository';
 import { ArticleEntity } from './article.entity';
 import { ARTICLE_NOT_FOUND } from './article.constants';
 import { CreateArticleDto } from './dto/create-article.dto';
+import { PublicationTagService } from '../publication-tag/publication-tag.service';
+import { UpdateArticleDto } from './dto/update-article.dto';
 
 @Injectable()
 export class ArticleService {
-  constructor(private readonly articleRepository: ArticleRepository) {}
+  constructor(private readonly articleRepository: ArticleRepository, private readonly publicationTagService: PublicationTagService) {}
 
   public async getArticle(id: string) {
     const article = await this.articleRepository.findById(id);
@@ -19,8 +21,20 @@ export class ArticleService {
   }
 
   public async saveArticle(dto: CreateArticleDto) {
-    const newArticle = new ArticleEntity(dto);
+    const tags = await this.publicationTagService.getTagsByIds(dto.tags);
+    const newArticle = ArticleEntity.fromDto(dto, tags);
     return this.articleRepository.save(newArticle);
+  }
+
+  public async updateArticle(id: string, dto: UpdateArticleDto): Promise<ArticleEntity> {
+    const tags = await this.publicationTagService.getTagsByIds(dto.tags);
+    const articleEntity = ArticleEntity.fromDto(dto, tags);
+    try {
+      const updatedArticle = await this.articleRepository.update(id, articleEntity)
+      return updatedArticle;
+    } catch {
+      throw new NotFoundException(`Article with id ${id} does not exist`);
+    }
   }
 
   public async deleteArticle(id: string) {

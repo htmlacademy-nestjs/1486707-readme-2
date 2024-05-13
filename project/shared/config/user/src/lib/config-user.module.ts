@@ -3,7 +3,7 @@ import { ConfigModule } from '@nestjs/config';
 import applicationConfig from './app.config';
 import mongoConfig from './mongo.config';
 
-const ENV_USERS_FILE_PATH = 'apps/user/users.env';
+const ENV_USERS_FILE_PATH = 'apps/user/user.env';
 
 @Module({
   imports: [

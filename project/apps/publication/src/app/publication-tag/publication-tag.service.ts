@@ -46,4 +46,19 @@ export class PublicationTagService {
         throw new Error('Something went wrong')
     }
   }
+
+  public async getTagsByIds(tagIds: string[]): Promise<PublicationTagEntity[]> {
+    const tags = await this.publicationTagRepository.findByIds(tagIds);
+
+    if (tags.length !== tagIds.length) {
+      const foundTags = tags.map((tag) => tag.id);
+      const notFoundTags = tagIds.filter((tagId) => !foundTags.includes(tagId))
+
+      if (notFoundTags.length) {
+        throw new NotFoundException(`Tags with ids ${notFoundTags.join(', ')} not found`);
+      }
+    }
+
+    return tags;
+  }
 }

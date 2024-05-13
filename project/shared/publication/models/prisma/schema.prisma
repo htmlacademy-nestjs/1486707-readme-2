@@ -14,6 +14,14 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum ArticleType {
+  video
+  text
+  quote
+  photo
+  link
+}
+
 model Article {
   id          String    @id @default(uuid())
   authorId    String    @map("author_id")
@@ -25,8 +33,8 @@ model Article {
   quoteAuthor String?
   photo       String?
   description String?
-  type        String
-  isRepost    Boolean   @map("is_repost")
+  type        ArticleType
+  isRepost    Boolean?   @map("is_repost")
   likes       String[]
   tags        Tag[]
   comments    Comment[]
