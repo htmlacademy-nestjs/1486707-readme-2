@@ -23,26 +23,93 @@ enum ArticleType {
 }
 
 model Article {
-  id          String    @id @default(uuid())
-  authorId    String    @map("author_id")
-  title       String?
-  link        String?
-  video       String?
-  text        String?
-  preview     String?
-  quoteAuthor String?
-  photo       String?
-  description String?
+  id          String        @id @default(uuid())
+  authorId    String        @map("author_id")
   type        ArticleType
-  isRepost    Boolean?   @map("is_repost")
-  likes       String[]
+  articleData ArticleData?
+  isRepost    Boolean?      @map("is_repost")
+  likes       ArticleLikes?
   tags        Tag[]
   comments    Comment[]
-  createdAt   DateTime  @default(now()) @map("created_at")
-  updatedAt   DateTime  @updatedAt @map("updated_at")
+  createdAt   DateTime      @default(now()) @map("created_at")
+  updatedAt   DateTime      @updatedAt @map("updated_at")
 
   @@index([authorId])
   @@map("articles")
+}
+
+model ArticleData {
+  id        String  @id @default(uuid())
+  articleId String  @unique @map("article_id")
+  article   Article @relation(fields: [articleId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+
+  videoDataId String?    @unique @map("video_data_id")
+  videoData   VideoData? @relation(fields: [videoDataId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+
+  textDataId String?   @unique @map("text_data_id")
+  textData   TextData? @relation(fields: [textDataId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+
+  quoteDataId String?    @unique @map("quote_data_id")
+  quoteData   QuoteData? @relation(fields: [quoteDataId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+
+  photoDataId String?    @unique @map("photo_data_id")
+  photoData   PhotoData? @relation(fields: [photoDataId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+
+  linkDataId String?   @unique @map("link_data_id")
+  linkData   LinkData? @relation(fields: [linkDataId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+}
+
+model VideoData {
+  id          String        @id @default(uuid())
+  articleData ArticleData[]
+  title       String
+  link        String
+  video       String
+
+  @@map("video_data")
+}
+
+model TextData {
+  id          String        @id @default(uuid())
+  articleData ArticleData[]
+  text        String
+  preview     String
+
+  @@map("text_data")
+}
+
+model QuoteData {
+  id          String        @id @default(uuid())
+  articleData ArticleData[]
+  text        String
+  quoteAuthor String        @map("quote_author")
+
+  @@map("quote_data")
+}
+
+model PhotoData {
+  id          String        @id @default(uuid())
+  articleData ArticleData[]
+
+  @@map("photo_data")
+}
+
+model LinkData {
+  id          String        @id @default(uuid())
+  articleData ArticleData[]
+  link        String
+  description String?
+
+  @@map("link_data")
+}
+
+model ArticleLikes {
+  articleId String   @id @unique @map("article_id")
+  article   Article  @relation(fields: [articleId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  authorId  String[] @unique @map("author_id")
 }
 
 model Tag {

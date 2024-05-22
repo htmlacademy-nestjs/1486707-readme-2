@@ -9,6 +9,12 @@ const SECOND_ARTICLE_UUID = 'ab04593b-da99-4fe3-8b4b-e06d82e2efdd';
 const FIRST_AUTHOR_ID = '658170cbb954e9f5b905ccf4';
 const SECOND_AUTHOR_ID = '6581762309c030b503e30512';
 
+const FIRST_ARTICLE_DATA_UUID = '7deee188-e72e-4255-919b-4464d91b046f';
+const SECOND_ARTICLE_DATA_UUID = 'ab24fb0f-10c5-4daf-8817-13288c9381a0';
+
+const VIDEO_DATA_UUID = '6b2a5c95-9502-423a-b43e-e98d78c99416';
+const LINK_DATA_UUID = 'f97e90af-6fe6-4364-a86b-f5cc2d23eacd';
+
 function getTags() {
   return [
     { id: FIRST_TAG_UUID, title: 'Test Tag 1' },
@@ -16,15 +22,33 @@ function getTags() {
   ];
 }
 
+function getVideoData() {
+  return [
+    {
+      id: VIDEO_DATA_UUID,
+      title: 'Test video title',
+      link: 'Test video link',
+      video: 'Test video content',
+    },
+  ];
+}
+
+function getLinkData() {
+  return [{ id: LINK_DATA_UUID, link: 'Test link' }];
+}
+
 function getArticles() {
   return [
     {
       id: FIRST_ARTICLE_UUID,
       authorId: FIRST_AUTHOR_ID,
-      title: 'Test data title 1',
+      articleData: {
+        id: FIRST_ARTICLE_DATA_UUID,
+        videoDataId: VIDEO_DATA_UUID,
+      },
       type: 'video' as ArticleType,
       isRepost: false,
-      likes: [],
+      likes: { authorId: [FIRST_AUTHOR_ID] },
       tags: {
         connect: [{ id: FIRST_TAG_UUID }],
       },
@@ -32,10 +56,15 @@ function getArticles() {
     {
       id: SECOND_ARTICLE_UUID,
       authorId: SECOND_AUTHOR_ID,
-      title: 'Test data title 2',
-      type: 'text' as ArticleType,
+      articleData: {
+        id: SECOND_ARTICLE_DATA_UUID,
+        linkDataId: LINK_DATA_UUID,
+      },
+      type: 'link' as ArticleType,
       isRepost: false,
-      likes: [],
+      likes: {
+        authorId: [FIRST_AUTHOR_ID, SECOND_AUTHOR_ID],
+      },
       tags: {
         connect: [{ id: FIRST_TAG_UUID }, { id: SECOND_TAG_UUID }],
       },
@@ -46,7 +75,7 @@ function getArticles() {
         },
         {
           text: 'Test comment 2',
-          authorId: FIRST_AUTHOR_ID,
+          authorId: SECOND_AUTHOR_ID,
         },
       ],
     },
@@ -66,6 +95,46 @@ async function seedDb(prismaClient: PrismaClient) {
     });
   }
 
+  const mockVideoData = getVideoData();
+  for (const videoData of mockVideoData) {
+    await prismaClient.videoData.upsert({
+      where: { id: videoData.id },
+      update: {},
+      create: {
+        id: videoData.id,
+        title: videoData.title,
+        link: videoData.link,
+        video: videoData.video,
+      },
+    });
+  }
+
+  const mockLinkData = getLinkData();
+  for (const linkData of mockLinkData) {
+    await prismaClient.linkData.upsert({
+      where: { id: linkData.id },
+      update: {},
+      create: {
+        id: linkData.id,
+        link: linkData.link,
+      },
+    });
+  }
+
+  // const mockArticleData = getArticleData();
+  // for (const articleData of mockArticleData) {
+  //   await prismaClient.articleData.upsert({
+  //     where: { id: articleData.id },
+  //     update: {},
+  //     create: {
+  //       id: articleData.id,
+  //       articleId: articleData.articleId,
+  //       videoDataId: articleData.videoDataId,
+  //       linkDataId: articleData.linkDataId,
+  //     },
+  //   });
+  // }
+
   const mockArticles = getArticles();
   for (const article of mockArticles) {
     await prismaClient.article.upsert({
@@ -74,10 +143,10 @@ async function seedDb(prismaClient: PrismaClient) {
       create: {
         id: article.id,
         authorId: article.authorId,
-        title: article.title,
+        articleData: { create: article.articleData },
         type: article.type,
         isRepost: article.isRepost,
-        likes: article.likes,
+        likes: { create: article.likes },
         tags: article.tags,
         comments: article.comments
           ? {
