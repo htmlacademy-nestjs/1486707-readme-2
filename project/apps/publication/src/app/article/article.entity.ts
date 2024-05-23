@@ -1,23 +1,23 @@
-import { Article, ArticleType } from '@project/shared/app/types';
+import {
+  Article,
+  ArticleDataIds,
+  ArticleType,
+} from '@project/shared/app/types';
 import { Entity } from '@project/shared/core';
 import { PublicationTagEntity } from '../publication-tag/publication-tag.entity';
 import { CreateArticleDto } from './dto/create-article.dto';
+import { CommentEntity } from '../comment/comment.entity';
+import { ArticleLikesEntity } from '../article-likes/article-likes.entity';
 
 export class ArticleEntity implements Article, Entity<string, Article> {
   public id?: string;
   public authorId: string;
   public tags?: PublicationTagEntity[];
-  public likes?: string[];
+  public likes?: ArticleLikesEntity;
   public type: ArticleType;
-  public title: string;
-  public link: string;
-  public video: string;
-  public text: string;
-  public preview: string;
-  public quoteAuthor: string;
-  public photo: string;
-  public description?: string;
+  public articleDataIds?: ArticleDataIds;
   public isRepost: boolean;
+  public comments: CommentEntity[];
   public createdAt?: Date;
   public updatedAt?: Date;
 
@@ -25,17 +25,13 @@ export class ArticleEntity implements Article, Entity<string, Article> {
     this.id = data.id ?? '';
     this.authorId = data.authorId;
     this.tags = data.tags.map((tag) => PublicationTagEntity.fromObject(tag));
-    this.likes = data.likes;
+    this.likes = ArticleLikesEntity.fromObject(data.likes);
     this.type = data.type;
-    this.title = data.title;
-    this.link = data.link;
-    this.video = data.video;
-    this.text = data.text;
-    this.preview = data.preview;
-    this.quoteAuthor = data.quoteAuthor;
-    this.photo = data.photo;
-    this.description = data.description;
+    this.articleDataIds = data.articleDataIds;
     this.isRepost = data.isRepost;
+    this.comments = data.comments.map((comment) =>
+      CommentEntity.fromObject(comment)
+    );
     this.createdAt = data.createdAt;
     this.updatedAt = data.updatedAt;
 
@@ -48,15 +44,9 @@ export class ArticleEntity implements Article, Entity<string, Article> {
       tags: this.tags.map((tagEntity) => tagEntity.toPOJO()),
       likes: this.likes,
       type: this.type,
-      title: this.title,
-      link: this.link,
-      video: this.video,
-      text: this.text,
-      preview: this.preview,
-      quoteAuthor: this.quoteAuthor,
-      photo: this.photo,
-      description: this.description,
+      articleDataIds: this.articleDataIds,
       isRepost: this.isRepost,
+      comments: this.comments.map((commentEntity) => commentEntity.toPOJO()),
       createdAt: this.createdAt,
       updatedAt: this.updatedAt,
     };
@@ -68,22 +58,14 @@ export class ArticleEntity implements Article, Entity<string, Article> {
 
   static fromDto(
     dto: CreateArticleDto,
-    tags: PublicationTagEntity[]
+    tags: PublicationTagEntity[],
   ): ArticleEntity {
     const entity = new ArticleEntity();
     entity.authorId = dto.authorId;
     entity.tags = tags;
-    entity.likes = [];
     entity.type = dto.type;
-    entity.title = dto.title;
-    entity.link = dto.link;
-    entity.video = dto.video;
-    entity.text = dto.text;
-    entity.preview = dto.preview;
-    entity.quoteAuthor = dto.quoteAuthor;
-    entity.photo = dto.photo;
-    entity.description = dto.description;
     entity.isRepost = false;
+    entity.comments = [];
 
     return entity;
   }

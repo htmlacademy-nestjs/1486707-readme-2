@@ -5,10 +5,14 @@ import { ARTICLE_NOT_FOUND } from './article.constants';
 import { CreateArticleDto } from './dto/create-article.dto';
 import { PublicationTagService } from '../publication-tag/publication-tag.service';
 import { UpdateArticleDto } from './dto/update-article.dto';
+import { CommentService } from '../comment/comment.service';
 
 @Injectable()
 export class ArticleService {
-  constructor(private readonly articleRepository: ArticleRepository, private readonly publicationTagService: PublicationTagService) {}
+  constructor(
+    private readonly articleRepository: ArticleRepository,
+     private readonly publicationTagService: PublicationTagService,
+      private readonly commentService: CommentService) {}
 
   public async getArticle(id: string) {
     const article = await this.articleRepository.findById(id);

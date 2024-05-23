@@ -23,22 +23,22 @@ enum ArticleType {
 }
 
 model Article {
-  id          String        @id @default(uuid())
-  authorId    String        @map("author_id")
-  type        ArticleType
-  articleData ArticleData?
-  isRepost    Boolean?      @map("is_repost")
-  likes       ArticleLikes?
-  tags        Tag[]
-  comments    Comment[]
-  createdAt   DateTime      @default(now()) @map("created_at")
-  updatedAt   DateTime      @updatedAt @map("updated_at")
+  id             String                @id @default(uuid())
+  authorId       String                @map("author_id")
+  type           ArticleType
+  articleDataIds ArticleToArticleData?
+  isRepost       Boolean?              @map("is_repost")
+  likes          ArticleLikes?
+  tags           Tag[]
+  comments       Comment[]
+  createdAt      DateTime              @default(now()) @map("created_at")
+  updatedAt      DateTime              @updatedAt @map("updated_at")
 
   @@index([authorId])
   @@map("articles")
 }
 
-model ArticleData {
+model ArticleToArticleData {
   id        String  @id @default(uuid())
   articleId String  @unique @map("article_id")
   article   Article @relation(fields: [articleId], references: [id], onUpdate: Cascade, onDelete: Cascade)
@@ -60,11 +60,13 @@ model ArticleData {
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("article_to_article_data")
 }
 
 model VideoData {
-  id          String        @id @default(uuid())
-  articleData ArticleData[]
+  id          String                 @id @default(uuid())
+  articleData ArticleToArticleData[]
   title       String
   link        String
   video       String
@@ -73,8 +75,8 @@ model VideoData {
 }
 
 model TextData {
-  id          String        @id @default(uuid())
-  articleData ArticleData[]
+  id          String                 @id @default(uuid())
+  articleData ArticleToArticleData[]
   text        String
   preview     String
 
@@ -82,24 +84,24 @@ model TextData {
 }
 
 model QuoteData {
-  id          String        @id @default(uuid())
-  articleData ArticleData[]
+  id          String                 @id @default(uuid())
+  articleData ArticleToArticleData[]
   text        String
-  quoteAuthor String        @map("quote_author")
+  quoteAuthor String                 @map("quote_author")
 
   @@map("quote_data")
 }
 
 model PhotoData {
-  id          String        @id @default(uuid())
-  articleData ArticleData[]
+  id          String                 @id @default(uuid())
+  articleData ArticleToArticleData[]
 
   @@map("photo_data")
 }
 
 model LinkData {
-  id          String        @id @default(uuid())
-  articleData ArticleData[]
+  id          String                 @id @default(uuid())
+  articleData ArticleToArticleData[]
   link        String
   description String?
 

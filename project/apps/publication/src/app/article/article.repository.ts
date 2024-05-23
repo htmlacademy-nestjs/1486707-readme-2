@@ -18,6 +18,12 @@ export class ArticleRepository extends BasePostgresRepository<
       where: {
         id,
       },
+      include: {
+        tags: true,
+        comments: true,
+        articleDataIds: true,
+        likes: true,
+      },
     });
 
     if (!document) {
@@ -32,6 +38,15 @@ export class ArticleRepository extends BasePostgresRepository<
     const record = await this.client.article.create({
       data: {
         ...pojoEntity,
+        articleDataIds: {
+          create: pojoEntity.articleDataIds,
+        },
+        likes: {
+          create: pojoEntity.likes,
+        },
+        comments: {
+          create: pojoEntity.comments,
+        },
         tags: {
           connect: pojoEntity.tags.map(({ id }) => ({ id })),
         },
@@ -51,12 +66,21 @@ export class ArticleRepository extends BasePostgresRepository<
       where: { id },
       data: {
         ...pojoEntity,
+        articleDataIds: {
+          update: pojoEntity.articleDataIds,
+        },
+        likes: {
+          update: pojoEntity.likes,
+        },
+        comments: {},
         tags: {
-          set: pojoEntity.tags.map((tag) => ({ id: tag.id })),
+          set: pojoEntity.tags.map(({ id }) => ({ id })),
         },
       },
       include: {
         tags: true,
+        articleDataIds: true,
+        likes: true
       },
     });
 

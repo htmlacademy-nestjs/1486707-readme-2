@@ -16,7 +16,7 @@ export class PublicationTagEntity implements Tag, Entity<string, Tag> {
   }
 
   public populate(data: Tag): void {
-    this.id = data.id ?? '';
+    this.id = data.id;
     this.title = data.title;
     this.updatedAt = data.updatedAt;
     this.createdAt = data.createdAt;

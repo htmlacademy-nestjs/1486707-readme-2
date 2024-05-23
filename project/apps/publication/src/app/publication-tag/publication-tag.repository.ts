@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { BasePostgresRepository } from '@project/shared/core';
 import { PublicationTagEntity } from './publication-tag.entity';
 import { Tag } from '@project/shared/app/types';
@@ -31,10 +31,6 @@ export class PublicationTagRepository extends BasePostgresRepository<
       },
     });
 
-    if (!document) {
-      throw new NotFoundException(`Tag with id ${id} not found.`);
-    }
-
     return this.createEntityFromDocument(document);
   }
 
@@ -44,10 +40,6 @@ export class PublicationTagRepository extends BasePostgresRepository<
         title,
       },
     });
-
-    if (!document) {
-      throw new NotFoundException(`Tag with title ${title} not found.`);
-    }
 
     return this.createEntityFromDocument(document);
   }

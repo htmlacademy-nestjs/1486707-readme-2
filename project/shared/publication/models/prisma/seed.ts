@@ -121,20 +121,6 @@ async function seedDb(prismaClient: PrismaClient) {
     });
   }
 
-  // const mockArticleData = getArticleData();
-  // for (const articleData of mockArticleData) {
-  //   await prismaClient.articleData.upsert({
-  //     where: { id: articleData.id },
-  //     update: {},
-  //     create: {
-  //       id: articleData.id,
-  //       articleId: articleData.articleId,
-  //       videoDataId: articleData.videoDataId,
-  //       linkDataId: articleData.linkDataId,
-  //     },
-  //   });
-  // }
-
   const mockArticles = getArticles();
   for (const article of mockArticles) {
     await prismaClient.article.upsert({
@@ -143,7 +129,7 @@ async function seedDb(prismaClient: PrismaClient) {
       create: {
         id: article.id,
         authorId: article.authorId,
-        articleData: { create: article.articleData },
+        articleDataIds: { create: article.articleData },
         type: article.type,
         isRepost: article.isRepost,
         likes: { create: article.likes },
