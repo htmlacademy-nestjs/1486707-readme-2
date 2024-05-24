@@ -10,7 +10,7 @@ export class PhotoDataEntity
   public updatedAt?: Date;
 
   public populate(data: PhotoArticleData) {
-    this.id = data.id ?? '';
+    this.id = data.id;
     this.photo = data.photo;
     this.createdAt = data.createdAt;
     this.updatedAt = data.updatedAt;
@@ -27,7 +27,7 @@ export class PhotoDataEntity
     };
   }
 
-  public fromObject(data: PhotoArticleData): PhotoDataEntity {
+  static fromObject(data: PhotoArticleData): PhotoDataEntity {
     return new PhotoDataEntity().populate(data);
   }
 }

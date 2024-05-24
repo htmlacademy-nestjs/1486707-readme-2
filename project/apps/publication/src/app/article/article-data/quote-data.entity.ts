@@ -11,7 +11,7 @@ export class QuoteDataEntity
   public updatedAt?: Date;
 
   public populate(data: QuoteArticleData) {
-    this.id = data.id ?? '';
+    this.id = data.id;
     this.text = data.text;
     this.quoteAuthor = data.quoteAuthor;
     this.createdAt = data.createdAt;
@@ -30,7 +30,7 @@ export class QuoteDataEntity
     };
   }
 
-  public fromObject(data: QuoteArticleData): QuoteDataEntity {
+  static fromObject(data: QuoteArticleData): QuoteDataEntity {
     return new QuoteDataEntity().populate(data);
   }
 }

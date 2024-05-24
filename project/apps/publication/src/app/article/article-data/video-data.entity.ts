@@ -12,7 +12,7 @@ export class VideoDataEntity
   public updatedAt?: Date;
 
   public populate(data: VideoArticleData) {
-    this.id = data.id ?? '';
+    this.id = data.id;
     this.title = data.title;
     this.link = data.link;
     this.video = data.video;
@@ -33,7 +33,7 @@ export class VideoDataEntity
     };
   }
 
-  public fromObject(data: VideoArticleData): VideoDataEntity {
+  static fromObject(data: VideoArticleData): VideoDataEntity {
     return new VideoDataEntity().populate(data);
   }
 }

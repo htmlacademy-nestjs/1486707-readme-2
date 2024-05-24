@@ -1,12 +1,13 @@
 import {
   Article,
+  ArticleData,
   ArticleDataIds,
   ArticleType,
+  Comment,
 } from '@project/shared/app/types';
 import { Entity } from '@project/shared/core';
 import { PublicationTagEntity } from '../publication-tag/publication-tag.entity';
 import { CreateArticleDto } from './dto/create-article.dto';
-import { CommentEntity } from '../comment/comment.entity';
 import { ArticleLikesEntity } from '../article-likes/article-likes.entity';
 
 export class ArticleEntity implements Article, Entity<string, Article> {
@@ -16,8 +17,9 @@ export class ArticleEntity implements Article, Entity<string, Article> {
   public likes?: ArticleLikesEntity;
   public type: ArticleType;
   public articleDataIds?: ArticleDataIds;
+  public articleData?: ArticleData;
+  public comments?: Comment[];
   public isRepost: boolean;
-  public comments: CommentEntity[];
   public createdAt?: Date;
   public updatedAt?: Date;
 
@@ -28,10 +30,9 @@ export class ArticleEntity implements Article, Entity<string, Article> {
     this.likes = ArticleLikesEntity.fromObject(data.likes);
     this.type = data.type;
     this.articleDataIds = data.articleDataIds;
+    this.articleData = data.articleData;
+    this.comments = data.comments;
     this.isRepost = data.isRepost;
-    this.comments = data.comments.map((comment) =>
-      CommentEntity.fromObject(comment)
-    );
     this.createdAt = data.createdAt;
     this.updatedAt = data.updatedAt;
 
@@ -40,13 +41,15 @@ export class ArticleEntity implements Article, Entity<string, Article> {
 
   public toPOJO(): Article {
     return {
+      id: this.id,
       authorId: this.authorId,
       tags: this.tags.map((tagEntity) => tagEntity.toPOJO()),
-      likes: this.likes,
+      likes: this.likes?.toPOJO(),
       type: this.type,
+      articleData: this.articleData,
       articleDataIds: this.articleDataIds,
+      comments: this.comments,
       isRepost: this.isRepost,
-      comments: this.comments.map((commentEntity) => commentEntity.toPOJO()),
       createdAt: this.createdAt,
       updatedAt: this.updatedAt,
     };
@@ -59,13 +62,14 @@ export class ArticleEntity implements Article, Entity<string, Article> {
   static fromDto(
     dto: CreateArticleDto,
     tags: PublicationTagEntity[],
+    articleDataIds: ArticleDataIds
   ): ArticleEntity {
     const entity = new ArticleEntity();
     entity.authorId = dto.authorId;
+    entity.articleDataIds = articleDataIds;
     entity.tags = tags;
     entity.type = dto.type;
     entity.isRepost = false;
-    entity.comments = [];
 
     return entity;
   }

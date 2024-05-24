@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { BasePostgresRepository } from '@project/shared/core';
 import { PrismaClientService } from '@project/shared/publication/models';
-import { ArticleLikes } from 'shared/app/types/src/lib/article-likes.interface';
+import { ArticleLikes } from '@project/shared/app/types';
 import { ArticleLikesEntity } from './article-likes.entity';
 
 @Injectable()

@@ -11,7 +11,7 @@ export class TextDataEntity
   public updatedAt?: Date;
 
   public populate(data: TextArticleData) {
-    this.id = data.id ?? '';
+    this.id = data.id;
     this.text = data.text;
     this.preview = data.preview;
     this.createdAt = data.createdAt;
@@ -30,7 +30,7 @@ export class TextDataEntity
     };
   }
 
-  public fromObject(data: TextArticleData): TextDataEntity {
+  static fromObject(data: TextArticleData): TextDataEntity {
     return new TextDataEntity().populate(data);
   }
 }

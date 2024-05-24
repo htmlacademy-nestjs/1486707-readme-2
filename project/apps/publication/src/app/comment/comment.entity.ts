@@ -24,7 +24,7 @@ export class CommentEntity implements Comment, Entity<string, Comment> {
 
   public toPOJO(): Comment {
     return {
-      id: this.articleId,
+      id: this.id,
       articleId: this.articleId,
       authorId: this.authorId,
       text: this.text,

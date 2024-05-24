@@ -14,7 +14,7 @@ import { ApiResponse } from '@nestjs/swagger';
 import { fillDto } from '@project/shared/helpers';
 import { CreateArticleDto } from './dto/create-article.dto';
 import { ArticleLikesService } from '../article-likes/article-likes.service';
-import { UpdateArticleListRdo } from './rdo/article-likes.rdo';
+import { UpdateArticleDto } from './dto/update-article.dto';
 
 @Controller('article')
 export class ArticleController {
@@ -51,22 +51,22 @@ export class ArticleController {
 
   @ApiResponse({
     status: HttpStatus.OK,
-    description: 'Publication comments are deleted',
+    description: 'Publication is deleted',
   })
   @Delete('/delete/:id')
   public async delete(@Param('id') id: string) {
     this.articleService.deleteArticle(id);
   }
 
-  @Patch('/like/:id')
+  @Patch('/update/:id')
   public async update(
     @Param('id') id: string,
-    @Body() dto: UpdateArticleListRdo
+    @Body() dto: UpdateArticleDto
   ) {
-    const updatedTag = await this.articleLikesService.updateArticleLikes(
+    const updatedArticle = await this.articleService.updateArticle(
       id,
       dto
     );
-    return fillDto(UpdateArticleListRdo, updatedTag.toPOJO());
+    return fillDto(ArticleRdo, updatedArticle.toPOJO());
   }
 }

@@ -59,9 +59,7 @@ export class CommentRepository extends BasePostgresRepository<
     });
 
     if (!records?.length) {
-      throw new NotFoundException(
-        `Comments for the article id ${articleId} not found`
-      );
+      return [];
     }
 
     const comments = records.map((record) =>

@@ -1,5 +1,5 @@
 import { Entity } from '@project/shared/core';
-import { ArticleLikes } from 'shared/app/types/src/lib/article-likes.interface';
+import { ArticleLikes } from '@project/shared/app/types';
 
 export class ArticleLikesEntity
   implements ArticleLikes, Entity<string, ArticleLikes>

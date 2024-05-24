@@ -6,12 +6,14 @@ export class LinkDataEntity
 {
   public id?: string;
   public link: string;
+  public description?: string;
   public createdAt?: Date;
   public updatedAt?: Date;
 
   public populate(data: LinkArticleData) {
-    this.id = data.id ?? '';
+    this.id = data.id;
     this.link = data.link;
+    this.description = data.description;
     this.createdAt = data.createdAt;
     this.updatedAt = data.updatedAt;
 
@@ -22,12 +24,13 @@ export class LinkDataEntity
     return {
       id: this.id,
       link: this.link,
+      description: this.description,
       createdAt: this.createdAt,
       updatedAt: this.updatedAt,
     };
   }
 
-  public fromObject(data: LinkArticleData): LinkDataEntity {
+  static fromObject(data: LinkArticleData): LinkDataEntity {
     return new LinkDataEntity().populate(data);
   }
 }

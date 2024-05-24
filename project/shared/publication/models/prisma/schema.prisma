@@ -70,6 +70,8 @@ model VideoData {
   title       String
   link        String
   video       String
+  createdAt   DateTime               @default(now()) @map("created_at")
+  updatedAt   DateTime               @updatedAt @map("updated_at")
 
   @@map("video_data")
 }
@@ -79,6 +81,8 @@ model TextData {
   articleData ArticleToArticleData[]
   text        String
   preview     String
+  createdAt   DateTime               @default(now()) @map("created_at")
+  updatedAt   DateTime               @updatedAt @map("updated_at")
 
   @@map("text_data")
 }
@@ -88,13 +92,18 @@ model QuoteData {
   articleData ArticleToArticleData[]
   text        String
   quoteAuthor String                 @map("quote_author")
+  createdAt   DateTime               @default(now()) @map("created_at")
+  updatedAt   DateTime               @updatedAt @map("updated_at")
 
   @@map("quote_data")
 }
 
 model PhotoData {
   id          String                 @id @default(uuid())
+  photo       String
   articleData ArticleToArticleData[]
+  createdAt   DateTime               @default(now()) @map("created_at")
+  updatedAt   DateTime               @updatedAt @map("updated_at")
 
   @@map("photo_data")
 }
@@ -104,6 +113,8 @@ model LinkData {
   articleData ArticleToArticleData[]
   link        String
   description String?
+  createdAt   DateTime               @default(now()) @map("created_at")
+  updatedAt   DateTime               @updatedAt @map("updated_at")
 
   @@map("link_data")
 }
@@ -111,7 +122,7 @@ model LinkData {
 model ArticleLikes {
   articleId String   @id @unique @map("article_id")
   article   Article  @relation(fields: [articleId], references: [id], onUpdate: Cascade, onDelete: Cascade)
-  authorId  String[] @unique @map("author_id")
+  authorId  String[] @map("author_id")
 }
 
 model Tag {

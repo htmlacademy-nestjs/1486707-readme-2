@@ -29,6 +29,7 @@ function getVideoData() {
       title: 'Test video title',
       link: 'Test video link',
       video: 'Test video content',
+      description: 'test video description',
     },
   ];
 }

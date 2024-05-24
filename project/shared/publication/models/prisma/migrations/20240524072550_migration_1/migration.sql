@@ -34,6 +34,8 @@ CREATE TABLE "video_data" (
     "title" TEXT NOT NULL,
     "link" TEXT NOT NULL,
     "video" TEXT NOT NULL,
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "video_data_pkey" PRIMARY KEY ("id")
 );
@@ -43,6 +45,8 @@ CREATE TABLE "text_data" (
     "id" TEXT NOT NULL,
     "text" TEXT NOT NULL,
     "preview" TEXT NOT NULL,
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "text_data_pkey" PRIMARY KEY ("id")
 );
@@ -52,6 +56,8 @@ CREATE TABLE "quote_data" (
     "id" TEXT NOT NULL,
     "text" TEXT NOT NULL,
     "quote_author" TEXT NOT NULL,
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "quote_data_pkey" PRIMARY KEY ("id")
 );
@@ -59,6 +65,9 @@ CREATE TABLE "quote_data" (
 -- CreateTable
 CREATE TABLE "photo_data" (
     "id" TEXT NOT NULL,
+    "photo" TEXT NOT NULL,
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "photo_data_pkey" PRIMARY KEY ("id")
 );
@@ -68,6 +77,8 @@ CREATE TABLE "link_data" (
     "id" TEXT NOT NULL,
     "link" TEXT NOT NULL,
     "description" TEXT,
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "link_data_pkey" PRIMARY KEY ("id")
 );

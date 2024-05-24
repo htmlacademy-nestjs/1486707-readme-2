@@ -2,15 +2,23 @@ import { ArticleLikes } from './article-likes.interface';
 import { Comment } from './comment.interface';
 import { Tag } from './tag.interface';
 
+export enum ArticleDataIdNames {
+  VIDEO_DATA_ID = 'videoDataId',
+  TEXT_DATA_ID = 'textDataId',
+  QUOTE_DATA_ID = 'quoteDataId',
+  PHOTO_DATA_ID = 'photoDataId',
+  LINK_DATA_ID = 'linkDataId',
+}
+
 export type ArticleType = 'video' | 'text' | 'quote' | 'photo' | 'link';
 export type ArticleDataIds = {
   id?: string;
   articleId?: string;
-  videoDataId?: string;
-  textDataId?: string;
-  quoteDataId?: string;
-  photoDataId?: string;
-  linkDataId?: string;
+  [ArticleDataIdNames.VIDEO_DATA_ID]?: string;
+  [ArticleDataIdNames.TEXT_DATA_ID]?: string;
+  [ArticleDataIdNames.QUOTE_DATA_ID]?: string;
+  [ArticleDataIdNames.PHOTO_DATA_ID]?: string;
+  [ArticleDataIdNames.LINK_DATA_ID]?: string;
 };
 
 export interface ArticleDataMeta {
@@ -55,6 +63,7 @@ export interface Article {
   id?: string;
   type: ArticleType;
   articleDataIds?: ArticleDataIds;
+  articleData?: ArticleData;
   authorId: string;
   tags?: Tag[];
   likes?: ArticleLikes;

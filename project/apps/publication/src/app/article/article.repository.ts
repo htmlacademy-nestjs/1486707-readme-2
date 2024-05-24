@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { BasePostgresRepository } from '@project/shared/core';
 import { ArticleEntity } from './article.entity';
 import { PrismaClientService } from '@project/shared/publication/models';
@@ -26,10 +26,6 @@ export class ArticleRepository extends BasePostgresRepository<
       },
     });
 
-    if (!document) {
-      throw new NotFoundException(`Article with id ${id} not found.`);
-    }
-
     return this.createEntityFromDocument(document);
   }
 
@@ -39,10 +35,14 @@ export class ArticleRepository extends BasePostgresRepository<
       data: {
         ...pojoEntity,
         articleDataIds: {
-          create: pojoEntity.articleDataIds,
+          create: {
+            ...pojoEntity.articleDataIds,
+          },
         },
         likes: {
-          create: pojoEntity.likes,
+          create: {
+            authorId: [],
+          },
         },
         comments: {
           create: pojoEntity.comments,
@@ -50,6 +50,11 @@ export class ArticleRepository extends BasePostgresRepository<
         tags: {
           connect: pojoEntity.tags.map(({ id }) => ({ id })),
         },
+      },
+      include: {
+        articleDataIds: true,
+        comments: true,
+        likes: true,
       },
     });
 
@@ -65,22 +70,22 @@ export class ArticleRepository extends BasePostgresRepository<
     const updatedArticle = await this.client.article.update({
       where: { id },
       data: {
-        ...pojoEntity,
+        id,
+        type: pojoEntity.type,
+        authorId: pojoEntity.authorId,
+        isRepost: pojoEntity.isRepost,
         articleDataIds: {
           update: pojoEntity.articleDataIds,
         },
-        likes: {
-          update: pojoEntity.likes,
-        },
-        comments: {},
         tags: {
           set: pojoEntity.tags.map(({ id }) => ({ id })),
         },
       },
       include: {
-        tags: true,
         articleDataIds: true,
-        likes: true
+        tags: true,
+        comments: true,
+        likes: true,
       },
     });
 

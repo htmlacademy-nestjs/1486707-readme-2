@@ -9,6 +9,11 @@ import { PrismaClientModule } from '@project/shared/publication/models';
 import { CommentService } from '../comment/comment.service';
 import { ArticleLikesRepository } from '../article-likes/article-likes.repository';
 import { CommentRepository } from '../comment/comment.repository';
+import { LinkDataRepository } from './article-data/link-data.repository';
+import { PhotoDataRepository } from './article-data/photo-data.repository';
+import { QuoteDataRepository } from './article-data/quote-data.repository';
+import { TextDataRepository } from './article-data/text-data.repository';
+import { VideoDataRepository } from './article-data/video-data.repository';
 
 @Module({
   imports: [PrismaClientModule],
@@ -22,6 +27,11 @@ import { CommentRepository } from '../comment/comment.repository';
     ArticleLikesRepository,
     CommentRepository,
     CommentService,
+    LinkDataRepository,
+    PhotoDataRepository,
+    QuoteDataRepository,
+    TextDataRepository,
+    VideoDataRepository,
   ],
   exports: [],
 })
