@@ -6,7 +6,6 @@ import { CreateArticleDto } from './dto/create-article.dto';
 import { PublicationTagService } from '../publication-tag/publication-tag.service';
 import { UpdateArticleDto } from './dto/update-article.dto';
 import { CommentService } from '../comment/comment.service';
-import { ArticleLikesService } from '../article-likes/article-likes.service';
 import { LinkDataRepository } from './article-data/link-data.repository';
 import { PhotoDataRepository } from './article-data/photo-data.repository';
 import { QuoteDataRepository } from './article-data/quote-data.repository';
