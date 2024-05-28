@@ -66,7 +66,7 @@ export interface Article {
   articleData?: ArticleData;
   authorId: string;
   tags?: Tag[];
-  likes?: ArticleLikes;
+  likes?: ArticleLikes[];
   comments?: Comment[];
   isRepost?: boolean;
   createdAt?: Date;

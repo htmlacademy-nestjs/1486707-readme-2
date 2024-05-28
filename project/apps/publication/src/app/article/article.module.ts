@@ -14,6 +14,7 @@ import { PhotoDataRepository } from './article-data/photo-data.repository';
 import { QuoteDataRepository } from './article-data/quote-data.repository';
 import { TextDataRepository } from './article-data/text-data.repository';
 import { VideoDataRepository } from './article-data/video-data.repository';
+import { ArticleMetaDataService } from './article-data/article-meta-data.service';
 
 @Module({
   imports: [PrismaClientModule],
@@ -32,6 +33,7 @@ import { VideoDataRepository } from './article-data/video-data.repository';
     QuoteDataRepository,
     TextDataRepository,
     VideoDataRepository,
+    ArticleMetaDataService,
   ],
   exports: [],
 })

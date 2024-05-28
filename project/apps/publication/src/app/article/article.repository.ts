@@ -39,13 +39,11 @@ export class ArticleRepository extends BasePostgresRepository<
             ...pojoEntity.articleDataIds,
           },
         },
-        likes: {
-          create: {
-            authorId: [],
-          },
-        },
         comments: {
           create: pojoEntity.comments,
+        },
+        likes: {
+          create: [],
         },
         tags: {
           connect: pojoEntity.tags.map(({ id }) => ({ id })),

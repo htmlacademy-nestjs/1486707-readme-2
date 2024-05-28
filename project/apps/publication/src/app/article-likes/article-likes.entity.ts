@@ -5,7 +5,7 @@ export class ArticleLikesEntity
   implements ArticleLikes, Entity<string, ArticleLikes>
 {
   public articleId: string;
-  public authorId: string[];
+  public authorId: string;
 
   public populate(data: ArticleLikes) {
     this.articleId = data.articleId;

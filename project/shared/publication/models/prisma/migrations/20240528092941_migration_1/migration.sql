@@ -86,9 +86,9 @@ CREATE TABLE "link_data" (
 -- CreateTable
 CREATE TABLE "ArticleLikes" (
     "article_id" TEXT NOT NULL,
-    "author_id" TEXT[],
+    "author_id" TEXT NOT NULL,
 
-    CONSTRAINT "ArticleLikes_pkey" PRIMARY KEY ("article_id")
+    CONSTRAINT "ArticleLikes_pkey" PRIMARY KEY ("article_id","author_id")
 );
 
 -- CreateTable
@@ -139,12 +139,6 @@ CREATE UNIQUE INDEX "article_to_article_data_photo_data_id_key" ON "article_to_a
 
 -- CreateIndex
 CREATE UNIQUE INDEX "article_to_article_data_link_data_id_key" ON "article_to_article_data"("link_data_id");
-
--- CreateIndex
-CREATE UNIQUE INDEX "ArticleLikes_article_id_key" ON "ArticleLikes"("article_id");
-
--- CreateIndex
-CREATE UNIQUE INDEX "ArticleLikes_author_id_key" ON "ArticleLikes"("author_id");
 
 -- CreateIndex
 CREATE INDEX "tags_title_idx" ON "tags"("title");

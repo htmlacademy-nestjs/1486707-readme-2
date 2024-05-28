@@ -1,4 +1,4 @@
 export interface ArticleLikes {
   articleId: string;
-  authorId: string[];
+  authorId: string;
 }

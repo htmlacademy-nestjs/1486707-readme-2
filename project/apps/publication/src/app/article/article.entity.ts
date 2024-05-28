@@ -14,7 +14,7 @@ export class ArticleEntity implements Article, Entity<string, Article> {
   public id?: string;
   public authorId: string;
   public tags?: PublicationTagEntity[];
-  public likes?: ArticleLikesEntity;
+  public likes?: ArticleLikesEntity[];
   public type: ArticleType;
   public articleDataIds?: ArticleDataIds;
   public articleData?: ArticleData;
@@ -24,10 +24,10 @@ export class ArticleEntity implements Article, Entity<string, Article> {
   public updatedAt?: Date;
 
   public populate(data: Article) {
-    this.id = data.id ?? '';
+    this.id = data.id;
     this.authorId = data.authorId;
     this.tags = data.tags.map((tag) => PublicationTagEntity.fromObject(tag));
-    this.likes = ArticleLikesEntity.fromObject(data.likes);
+    this.likes = data.likes.map((like) => ArticleLikesEntity.fromObject(like));
     this.type = data.type;
     this.articleDataIds = data.articleDataIds;
     this.articleData = data.articleData;
@@ -43,8 +43,8 @@ export class ArticleEntity implements Article, Entity<string, Article> {
     return {
       id: this.id,
       authorId: this.authorId,
-      tags: this.tags.map((tagEntity) => tagEntity.toPOJO()),
-      likes: this.likes?.toPOJO(),
+      tags: this.tags?.map((tagEntity) => tagEntity.toPOJO()) || [],
+      likes: this.likes?.map((likeEntity) => likeEntity.toPOJO()) || [],
       type: this.type,
       articleData: this.articleData,
       articleDataIds: this.articleDataIds,

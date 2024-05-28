@@ -28,7 +28,7 @@ model Article {
   type           ArticleType
   articleDataIds ArticleToArticleData?
   isRepost       Boolean?              @map("is_repost")
-  likes          ArticleLikes?
+  likes          ArticleLikes[]
   tags           Tag[]
   comments       Comment[]
   createdAt      DateTime              @default(now()) @map("created_at")
@@ -120,9 +120,12 @@ model LinkData {
 }
 
 model ArticleLikes {
-  articleId String   @id @unique @map("article_id")
-  article   Article  @relation(fields: [articleId], references: [id], onUpdate: Cascade, onDelete: Cascade)
-  authorId  String[] @map("author_id")
+  articleId String  @map("article_id")
+  article   Article @relation(fields: [articleId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  authorId  String  @map("author_id")
+
+  @@id([articleId, authorId])
+  @@map("article_likes")
 }
 
 model Tag {

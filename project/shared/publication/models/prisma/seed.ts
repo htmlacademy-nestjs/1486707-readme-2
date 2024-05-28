@@ -49,7 +49,11 @@ function getArticles() {
       },
       type: 'video' as ArticleType,
       isRepost: false,
-      likes: { authorId: [FIRST_AUTHOR_ID] },
+      likes: [
+        {
+          authorId: FIRST_AUTHOR_ID,
+        },
+      ],
       tags: {
         connect: [{ id: FIRST_TAG_UUID }],
       },
@@ -63,9 +67,14 @@ function getArticles() {
       },
       type: 'link' as ArticleType,
       isRepost: false,
-      likes: {
-        authorId: [FIRST_AUTHOR_ID, SECOND_AUTHOR_ID],
-      },
+      likes: [
+        {
+          authorId: FIRST_AUTHOR_ID,
+        },
+        {
+          authorId: SECOND_AUTHOR_ID,
+        },
+      ],
       tags: {
         connect: [{ id: FIRST_TAG_UUID }, { id: SECOND_TAG_UUID }],
       },
