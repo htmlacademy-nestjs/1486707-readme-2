@@ -1,0 +1,153 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../../../../node_modules/.prisma/client"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum ArticleType {
+  video
+  text
+  quote
+  photo
+  link
+}
+
+model Article {
+  id             String                @id @default(uuid())
+  authorId       String                @map("author_id")
+  type           ArticleType
+  articleDataIds ArticleToArticleData?
+  isRepost       Boolean?              @map("is_repost")
+  likes          ArticleLikes[]
+  tags           Tag[]
+  comments       Comment[]
+  createdAt      DateTime              @default(now()) @map("created_at")
+  updatedAt      DateTime              @updatedAt @map("updated_at")
+
+  @@index([authorId])
+  @@map("articles")
+}
+
+model ArticleToArticleData {
+  id        String  @id @default(uuid())
+  articleId String  @unique @map("article_id")
+  article   Article @relation(fields: [articleId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+
+  videoDataId String?    @unique @map("video_data_id")
+  videoData   VideoData? @relation(fields: [videoDataId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+
+  textDataId String?   @unique @map("text_data_id")
+  textData   TextData? @relation(fields: [textDataId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+
+  quoteDataId String?    @unique @map("quote_data_id")
+  quoteData   QuoteData? @relation(fields: [quoteDataId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+
+  photoDataId String?    @unique @map("photo_data_id")
+  photoData   PhotoData? @relation(fields: [photoDataId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+
+  linkDataId String?   @unique @map("link_data_id")
+  linkData   LinkData? @relation(fields: [linkDataId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("article_to_article_data")
+}
+
+model VideoData {
+  id          String                 @id @default(uuid())
+  articleData ArticleToArticleData[]
+  title       String
+  link        String
+  video       String
+  createdAt   DateTime               @default(now()) @map("created_at")
+  updatedAt   DateTime               @updatedAt @map("updated_at")
+
+  @@map("video_data")
+}
+
+model TextData {
+  id          String                 @id @default(uuid())
+  articleData ArticleToArticleData[]
+  text        String
+  preview     String
+  createdAt   DateTime               @default(now()) @map("created_at")
+  updatedAt   DateTime               @updatedAt @map("updated_at")
+
+  @@map("text_data")
+}
+
+model QuoteData {
+  id          String                 @id @default(uuid())
+  articleData ArticleToArticleData[]
+  text        String
+  quoteAuthor String                 @map("quote_author")
+  createdAt   DateTime               @default(now()) @map("created_at")
+  updatedAt   DateTime               @updatedAt @map("updated_at")
+
+  @@map("quote_data")
+}
+
+model PhotoData {
+  id          String                 @id @default(uuid())
+  photo       String
+  articleData ArticleToArticleData[]
+  createdAt   DateTime               @default(now()) @map("created_at")
+  updatedAt   DateTime               @updatedAt @map("updated_at")
+
+  @@map("photo_data")
+}
+
+model LinkData {
+  id          String                 @id @default(uuid())
+  articleData ArticleToArticleData[]
+  link        String
+  description String?
+  createdAt   DateTime               @default(now()) @map("created_at")
+  updatedAt   DateTime               @updatedAt @map("updated_at")
+
+  @@map("link_data")
+}
+
+model ArticleLikes {
+  articleId String  @map("article_id")
+  article   Article @relation(fields: [articleId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  authorId  String  @map("author_id")
+
+  @@id([articleId, authorId])
+  @@map("article_likes")
+}
+
+model Tag {
+  id        String    @id @default(uuid())
+  title     String
+  articles  Article[]
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+
+  @@index([title])
+  @@map("tags")
+}
+
+model Comment {
+  id        String   @id @default(uuid())
+  articleId String   @map("article_id")
+  article   Article  @relation(fields: [articleId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  authorId  String   @map("author_id")
+  text      String
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@index([articleId])
+  @@map("comments")
+}

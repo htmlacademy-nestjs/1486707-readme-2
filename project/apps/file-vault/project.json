@@ -19,6 +19,12 @@
           "buildTarget": "file-vault:build:production"
         }
       }
+    },
+    "docker:compose": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "docker compose --file apps/file-vault/docker-compose.dev.yml --env-file apps/file-vault/file-vault.env --project-name 'readme_file-vault' up -d"
+      }
     }
   }
 }

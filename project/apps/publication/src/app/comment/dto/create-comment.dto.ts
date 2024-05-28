@@ -5,7 +5,13 @@ export class CreateCommentDto {
     description: 'Publication id which the comment relates to',
     example: 'a12',
   })
-  public publicationId: string;
+  public articleId: string;
+
+  @ApiProperty({
+    description: 'User id who wrote the comment',
+    example: 'a12',
+  })
+  public authorId: string;
 
   @ApiProperty({
     description: 'Comment text',

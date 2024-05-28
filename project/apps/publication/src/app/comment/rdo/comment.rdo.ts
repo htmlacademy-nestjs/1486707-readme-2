@@ -16,7 +16,14 @@ export class CommentRdo {
     example: 'a12',
   })
   @Expose()
-  public publicationId: string;
+  public articleId: string;
+
+  @ApiProperty({
+    description: 'User id who wrote the comment',
+    example: 'a12',
+  })
+  @Expose()
+  public authorId: string;
 
   @ApiProperty({
     description: 'Comment text',
