@@ -1,58 +1,34 @@
-import { PipeTransform, BadRequestException } from '@nestjs/common';
 import { LoginUserDto, loginUserDtoSchema } from './dto/login-user.dto';
 import { CreateUserDto, createUserDtoSchema } from './dto/create-user.dto';
-import { ChangePasswordDto } from './dto/change-password.dto';
+import {
+  ChangePasswordDto,
+  changePasswordDtoSchema,
+} from './dto/change-password.dto';
+import { ValidatorPipe } from '@project/shared/core';
 
-export class LoginUserValidatorPipe
-  implements PipeTransform<LoginUserDto, LoginUserDto>
-{
-  public transform(query: LoginUserDto): LoginUserDto {
-    const result = loginUserDtoSchema.validate(query, {
-      convert: true,
-    });
-
-    if (result.error) {
-      const errorMessages = result.error.details.map((d) => d.message).join();
-      throw new BadRequestException(errorMessages);
-    }
-
-    const loginUserValue = result.value;
-    return loginUserValue;
+export class LoginUserValidatorPipe extends ValidatorPipe<
+  LoginUserDto,
+  LoginUserDto
+> {
+  constructor() {
+    super(loginUserDtoSchema);
   }
 }
 
-export class CreateUserValidatorPipe
-  implements PipeTransform<CreateUserDto, CreateUserDto>
-{
-  public transform(query: CreateUserDto): CreateUserDto {
-    const result = createUserDtoSchema.validate(query, {
-      convert: true,
-    });
-
-    if (result.error) {
-      const errorMessages = result.error.details.map((d) => d.message).join();
-      throw new BadRequestException(errorMessages);
-    }
-
-    const createUserValue = result.value;
-    return createUserValue;
+export class CreateUserValidatorPipe extends ValidatorPipe<
+  CreateUserDto,
+  CreateUserDto
+> {
+  constructor() {
+    super(createUserDtoSchema);
   }
 }
 
-export class ChangePasswordValidatorPipe
-  implements PipeTransform<ChangePasswordDto, ChangePasswordDto>
-{
-  public transform(query: ChangePasswordDto): ChangePasswordDto {
-    const result = createUserDtoSchema.validate(query, {
-      convert: true,
-    });
-
-    if (result.error) {
-      const errorMessages = result.error.details.map((d) => d.message).join();
-      throw new BadRequestException(errorMessages);
-    }
-
-    const changePasswordValue = result.value;
-    return changePasswordValue;
+export class ChangePasswordValidatorPipe extends ValidatorPipe<
+  ChangePasswordDto,
+  ChangePasswordDto
+> {
+  constructor() {
+    super(changePasswordDtoSchema);
   }
 }

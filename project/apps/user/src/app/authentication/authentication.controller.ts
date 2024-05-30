@@ -40,7 +40,8 @@ export class AuthenticationController {
   @Post('login')
   public async login(@Body(new LoginUserValidatorPipe()) dto: LoginUserDto) {
     const verifiedUser = await this.authService.verifyUser(dto);
-    return fillDto(LoggedUserRdo, verifiedUser.toPOJO());
+    const userToken = await this.authService.createUserToken(verifiedUser);
+    return fillDto(LoggedUserRdo, { ...verifiedUser.toPOJO(), ...userToken });
   }
 
   @ApiResponse({
