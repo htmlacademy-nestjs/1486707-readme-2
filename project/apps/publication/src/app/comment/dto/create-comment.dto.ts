@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+import Joi from 'joi';
 
 export class CreateCommentDto {
   @ApiProperty({
@@ -19,3 +20,9 @@ export class CreateCommentDto {
   })
   public text: string;
 }
+
+export const createCommentDtoSchema = Joi.object({
+  articleId: Joi.string().required(),
+  authorId: Joi.string().required(),
+  text: Joi.string().required(),
+}).options({ abortEarly: false });

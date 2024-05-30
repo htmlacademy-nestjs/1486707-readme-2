@@ -12,6 +12,7 @@ import { fillDto } from '@project/shared/helpers';
 import { CommentService } from './comment.service';
 import { CommentRdo } from './rdo/comment.rdo';
 import { CreateCommentDto } from './dto/create-comment.dto';
+import { CreateCommentValidatorPipe } from './comment.validation.pipeline';
 
 @ApiTags('comments')
 @Controller('comment')
@@ -37,7 +38,9 @@ export class CommentController {
     description: 'A new comment has been successfully created',
   })
   @Post('create')
-  public async create(@Body() dto: CreateCommentDto) {
+  public async create(
+    @Body(new CreateCommentValidatorPipe()) dto: CreateCommentDto
+  ) {
     const newComment = await this.commentService.createComment(dto);
     return fillDto(CommentRdo, newComment.toPOJO());
   }

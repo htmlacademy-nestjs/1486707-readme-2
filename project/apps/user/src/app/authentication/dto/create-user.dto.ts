@@ -1,4 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
+import Joi from "joi";
 
 export class CreateUserDto {
     @ApiProperty({
@@ -25,3 +26,10 @@ export class CreateUserDto {
       })
     public password: string;
 }
+
+export const createUserDtoSchema = Joi.object({
+  email: Joi.string().email().required(),
+  password: Joi.string().required(),
+  name: Joi.string().required(),
+  avatar: Joi.string()
+}).options({ abortEarly: false });

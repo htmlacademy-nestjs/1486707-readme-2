@@ -7,6 +7,7 @@ import { PublicationTagService } from '../publication-tag/publication-tag.servic
 import { UpdateArticleDto } from './dto/update-article.dto';
 import { CommentService } from '../comment/comment.service';
 import { ArticleMetaDataService } from './article-data/article-meta-data.service';
+import { ArticleQuery } from './article.types';
 
 @Injectable()
 export class ArticleService {
@@ -114,6 +115,15 @@ export class ArticleService {
       return deletedArticle;
     } catch {
       throw new NotFoundException(`The article with id ${id} not found`);
+    }
+  }
+
+  public async getArticles(query: ArticleQuery) {
+    try {
+      const foundArticles = await this.articleRepository.find(query);
+      return foundArticles;
+    } catch {
+      throw new NotFoundException(`Articles for that query not found`);
     }
   }
 }

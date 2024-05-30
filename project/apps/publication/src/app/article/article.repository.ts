@@ -3,6 +3,9 @@ import { BasePostgresRepository } from '@project/shared/core';
 import { ArticleEntity } from './article.entity';
 import { PrismaClientService } from '@project/shared/publication/models';
 import { Article } from '@project/shared/app/types';
+import { articleFilterToPrismaFilter } from './article.filter';
+import { ARTICLE_LIMIT } from './article.constants';
+import { ArticleQuery } from './article.types';
 
 @Injectable()
 export class ArticleRepository extends BasePostgresRepository<
@@ -94,5 +97,17 @@ export class ArticleRepository extends BasePostgresRepository<
     await this.client.article.delete({
       where: { id },
     });
+  }
+
+  public async find(query: ArticleQuery): Promise<ArticleEntity[]> {
+    const { filter, take } = query;
+    const where = filter ?? articleFilterToPrismaFilter(filter);
+
+    const documents = await this.client.article.findMany({
+      where,
+      take: take ?? ARTICLE_LIMIT,
+    });
+
+    return documents.map((document) => this.createEntityFromDocument(document));
   }
 }

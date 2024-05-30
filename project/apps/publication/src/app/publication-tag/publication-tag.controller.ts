@@ -12,6 +12,10 @@ import {
   Patch,
 } from '@nestjs/common';
 import { UpdateTagDto } from './dto/update-tag.dto';
+import {
+  CreateTagValidatorPipe,
+  UpdateTagValidatorPipe,
+} from './publication-tag.validaion.pipeline';
 
 @Controller('tags')
 export class PublicationTagController {
@@ -23,7 +27,7 @@ export class PublicationTagController {
   }
 
   @Post('/')
-  public async create(@Body() dto: CreateTagDto) {
+  public async create(@Body(new CreateTagValidatorPipe()) dto: CreateTagDto) {
     const newTag = await this.publicationTagService.createTag(dto);
     return fillDto(TagRdo, newTag.toPOJO());
   }
@@ -34,7 +38,10 @@ export class PublicationTagController {
   }
 
   @Patch('/:id')
-  public async update(@Param('id') id: string, @Body() dto: UpdateTagDto) {
+  public async update(
+    @Param('id') id: string,
+    @Body(new UpdateTagValidatorPipe()) dto: UpdateTagDto
+  ) {
     const updatedTag = await this.publicationTagService.updateTag(id, dto);
     return fillDto(TagRdo, updatedTag.toPOJO());
   }
