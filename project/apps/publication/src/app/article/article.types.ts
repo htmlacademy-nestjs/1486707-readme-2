@@ -35,8 +35,9 @@ export interface ArticleFilter {
 }
 
 export interface ArticleQuery {
-  skip?: number;
+  limit?: number;
   take?: number;
   filter?: ArticleFilter;
   sort?: ArticleSortType;
+  page?: number;
 }

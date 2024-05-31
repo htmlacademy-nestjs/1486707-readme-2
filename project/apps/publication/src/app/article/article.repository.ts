@@ -100,14 +100,21 @@ export class ArticleRepository extends BasePostgresRepository<
   }
 
   public async find(query: ArticleQuery): Promise<ArticleEntity[]> {
-    const { filter, take } = query;
+    const { filter, take, page } = query;
+    const skip = page && take ? (page - 1) * take : undefined;
     const where = filter ?? articleFilterToPrismaFilter(filter);
 
     const documents = await this.client.article.findMany({
       where,
       take: take ?? ARTICLE_LIMIT,
+      skip,
+      include: {
+        comments: true,
+        likes: true,
+        tags: true,
+        articleDataIds: true,
+      },
     });
-
     return documents.map((document) => this.createEntityFromDocument(document));
   }
 }

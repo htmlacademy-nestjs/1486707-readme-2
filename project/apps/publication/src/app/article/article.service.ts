@@ -121,6 +121,7 @@ export class ArticleService {
   public async getArticles(query: ArticleQuery) {
     try {
       const foundArticles = await this.articleRepository.find(query);
+
       return foundArticles;
     } catch {
       throw new NotFoundException(`Articles for that query not found`);
