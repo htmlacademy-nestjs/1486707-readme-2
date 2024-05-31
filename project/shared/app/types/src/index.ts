@@ -7,3 +7,4 @@ export * from './lib/tag.interface';
 export * from './lib/article-likes.interface';
 export * from './lib/token.interface';
 export * from './lib/token-payload.interface';
+export * from './lib/stored-file.interface';
