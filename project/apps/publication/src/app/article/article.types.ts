@@ -1,3 +1,4 @@
+import { ArticleType } from '@project/shared/app/types';
 import { LinkDataEntity } from './article-data/link-data.entity';
 import { LinkDataRepository } from './article-data/link-data.repository';
 import { PhotoDataEntity } from './article-data/photo-data.entity';
@@ -22,3 +23,21 @@ export type ArticleDataRepository =
   | QuoteDataRepository
   | TextDataRepository
   | VideoDataRepository;
+
+export enum ArticleSortType {
+  DATE = 'date',
+  LIKES = 'likes',
+  COMMENTS = 'comments',
+}
+
+export interface ArticleFilter {
+  type?: ArticleType;
+}
+
+export interface ArticleQuery {
+  limit?: number;
+  take?: number;
+  filter?: ArticleFilter;
+  sort?: ArticleSortType;
+  page?: number;
+}

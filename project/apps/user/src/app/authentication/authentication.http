@@ -3,7 +3,7 @@ POST http://localhost:3000/api/auth/register HTTP/1.1
 Content-Type: application/json
 
 {
-  "email": "user@notfound.local",
+  "email": "user@notfound.com",
   "name": "Keks",
   "password": "123456"
 }
@@ -15,8 +15,18 @@ POST http://localhost:3000/api/auth/login HTTP/1.1
 Content-Type: application/json
 
 {
-  "email": "user@notfound.local",
+  "email": "user@notfound.com",
   "password": "123456"
+}
+
+###
+
+# Change password
+POST http://localhost:3000/api/auth/change HTTP/1.1
+Content-Type: application/json
+
+{
+  "newPassword": "654321"
 }
 
 ###

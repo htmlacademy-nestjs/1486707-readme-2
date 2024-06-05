@@ -7,6 +7,7 @@ import {
   Param,
   Patch,
   Post,
+  Query,
 } from '@nestjs/common';
 import { ArticleService } from './article.service';
 import { ArticleRdo } from './rdo/article.rdo';
@@ -15,6 +16,8 @@ import { fillDto } from '@project/shared/helpers';
 import { CreateArticleDto } from './dto/create-article.dto';
 import { ArticleLikesService } from '../article-likes/article-likes.service';
 import { UpdateArticleDto } from './dto/update-article.dto';
+import { ArticleQuery } from './article.types';
+import { JoiValidationPipe } from '@project/shared/core';
 
 @Controller('article')
 export class ArticleController {
@@ -34,17 +37,12 @@ export class ArticleController {
     return fillDto(ArticleRdo, article.toPOJO());
   }
 
-  @Get('/like/:id')
-  public async showArticleLikes(@Param('id') id: string) {
-    return this.articleLikesService.getArticleLikes(id);
-  }
-
   @ApiResponse({
     status: HttpStatus.CREATED,
     description: 'A new comment has been successfully created',
   })
   @Post('create')
-  public async create(@Body() dto: CreateArticleDto) {
+  public async create(@Body(JoiValidationPipe) dto: CreateArticleDto) {
     const newComment = await this.articleService.saveArticle(dto);
     return fillDto(ArticleRdo, newComment.toPOJO());
   }
@@ -61,12 +59,19 @@ export class ArticleController {
   @Patch('/update/:id')
   public async update(
     @Param('id') id: string,
-    @Body() dto: UpdateArticleDto
+    @Body(JoiValidationPipe) dto: UpdateArticleDto
   ) {
-    const updatedArticle = await this.articleService.updateArticle(
-      id,
-      dto
-    );
+    const updatedArticle = await this.articleService.updateArticle(id, dto);
     return fillDto(ArticleRdo, updatedArticle.toPOJO());
+  }
+
+  @Get('/')
+  public async index(@Query() query: ArticleQuery) {
+    const articlesWithPagination = await this.articleService.getArticles(query);
+    const result = {
+      ...articlesWithPagination,
+      entities: articlesWithPagination.map((article) => article.toPOJO()),
+    };
+    return result;
   }
 }
