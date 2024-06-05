@@ -6,12 +6,8 @@ import { AuthorRdo } from '../author/rdo/author.rdo';
 import { LoginUserDto } from './dto/login-user.dto';
 import { LoggedUserRdo } from './rdo/logged-user.rdo';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
-import {
-  ChangePasswordValidatorPipe,
-  CreateUserValidatorPipe,
-  LoginUserValidatorPipe,
-} from './authentication.validation.pipeline';
 import { ChangePasswordDto } from './dto/change-password.dto';
+import { JoiValidationPipe } from '@project/shared/core';
 
 @ApiTags('authentication')
 @Controller('auth')
@@ -23,7 +19,9 @@ export class AuthenticationController {
     description: 'A new user has been successfully created',
   })
   @Post('register')
-  public async create(@Body(new CreateUserValidatorPipe()) dto: CreateUserDto) {
+  public async create(
+    @Body(JoiValidationPipe) dto: CreateUserDto
+  ) {
     const newUser = await this.authService.register(dto);
     return fillDto(AuthorRdo, newUser.toPOJO());
   }
@@ -38,7 +36,9 @@ export class AuthenticationController {
     description: 'Password or Login is wrong.',
   })
   @Post('login')
-  public async login(@Body(new LoginUserValidatorPipe()) dto: LoginUserDto) {
+  public async login(
+    @Body(JoiValidationPipe) dto: LoginUserDto
+  ) {
     const verifiedUser = await this.authService.verifyUser(dto);
     const userToken = await this.authService.createUserToken(verifiedUser);
     return fillDto(LoggedUserRdo, { ...verifiedUser.toPOJO(), ...userToken });
@@ -50,7 +50,8 @@ export class AuthenticationController {
   })
   @Patch('change')
   public async changePassword(
-    @Body(new ChangePasswordValidatorPipe()) dto: ChangePasswordDto
+    @Body(JoiValidationPipe)
+    dto: ChangePasswordDto
   ) {
     await this.authService.changePassword(dto);
   }

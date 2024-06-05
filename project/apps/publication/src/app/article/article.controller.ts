@@ -17,10 +17,7 @@ import { CreateArticleDto } from './dto/create-article.dto';
 import { ArticleLikesService } from '../article-likes/article-likes.service';
 import { UpdateArticleDto } from './dto/update-article.dto';
 import { ArticleQuery } from './article.types';
-import {
-  CreateArticleValidatorPipe,
-  UpdateArticleValidatorPipe,
-} from './article.validation.pipeline';
+import { JoiValidationPipe } from '@project/shared/core';
 
 @Controller('article')
 export class ArticleController {
@@ -45,9 +42,7 @@ export class ArticleController {
     description: 'A new comment has been successfully created',
   })
   @Post('create')
-  public async create(
-    @Body(new CreateArticleValidatorPipe()) dto: CreateArticleDto
-  ) {
+  public async create(@Body(JoiValidationPipe) dto: CreateArticleDto) {
     const newComment = await this.articleService.saveArticle(dto);
     return fillDto(ArticleRdo, newComment.toPOJO());
   }
@@ -64,7 +59,7 @@ export class ArticleController {
   @Patch('/update/:id')
   public async update(
     @Param('id') id: string,
-    @Body(new UpdateArticleValidatorPipe()) dto: UpdateArticleDto
+    @Body(JoiValidationPipe) dto: UpdateArticleDto
   ) {
     const updatedArticle = await this.articleService.updateArticle(id, dto);
     return fillDto(ArticleRdo, updatedArticle.toPOJO());

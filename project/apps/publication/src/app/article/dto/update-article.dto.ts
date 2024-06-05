@@ -6,17 +6,12 @@ import { createQuoteArticleDtoSchema } from '../article-data/dto/create-quote-da
 import { createTextArticleDtoSchema } from '../article-data/dto/create-text-data.dto';
 import { createVideoArticleDtoSchema } from '../article-data/dto/create-video-data.dto';
 import { ArticleTypes } from '../article.constants';
-
-export class UpdateArticleDto {
-  public type: ArticleType;
-  public authorId: string;
-  public tags?: string[];
-  public isRepost?: boolean;
-  public articleData: ArticleData;
-}
+import { ValidateViaJoi } from '@project/shared/core';
 
 export const updateArticleDtoSchema = Joi.object({
-  type: Joi.string().required().valid(...Object.values(ArticleTypes)),
+  type: Joi.string()
+    .required()
+    .valid(...Object.values(ArticleTypes)),
   authorId: Joi.string(),
   tags: Joi.array().items(Joi.string()),
   isRepost: Joi.boolean,
@@ -47,3 +42,12 @@ export const updateArticleDtoSchema = Joi.object({
     })
     .required(),
 }).options({ abortEarly: false });
+
+@ValidateViaJoi(updateArticleDtoSchema)
+export class UpdateArticleDto {
+  public type: ArticleType;
+  public authorId: string;
+  public tags?: string[];
+  public isRepost?: boolean;
+  public articleData: ArticleData;
+}

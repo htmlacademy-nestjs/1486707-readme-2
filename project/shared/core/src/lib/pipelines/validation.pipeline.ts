@@ -1,15 +1,21 @@
-import { PipeTransform, BadRequestException } from '@nestjs/common';
+import { Reflector } from '@nestjs/core';
+import {
+  PipeTransform,
+  BadRequestException,
+  ArgumentMetadata,
+  Injectable,
+} from '@nestjs/common';
 import Joi = require('joi');
 
-export abstract class ValidatorPipe<T, V> implements PipeTransform<T, V> {
-  public schema: Joi.ObjectSchema<unknown>;
+export const ValidateViaJoi = Reflector.createDecorator<Joi.ObjectSchema>();
 
-  constructor(schema) {
-    this.schema = schema;
-  }
+@Injectable()
+export class JoiValidationPipe implements PipeTransform {
+  constructor(private readonly reflector: Reflector) {}
 
-  public transform(query: T): V {
-    const result = this.schema.validate(query, {
+  public transform(query: unknown, metadata: ArgumentMetadata) {
+    const schema = this.reflector.get(ValidateViaJoi, metadata.metatype);
+    const result = schema.validate(query, {
       convert: true,
     });
 

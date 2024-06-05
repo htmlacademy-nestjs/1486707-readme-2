@@ -75,17 +75,12 @@ export class AuthenticationService {
     const { newPassword } = dto;
     user.setPassword(newPassword);
 
-    this.authorRepository.update(user.id, user);
+    await this.authorRepository.update(user.id, user);
   }
 
   public async createUserToken(user: User): Promise<Token> {
     const payload: TokenPayload = {
       sub: user.id,
-      email: user.email,
-      name: user.name,
-      role: user.role,
-      avatar: user.avatar,
-      subscriptions: user.subscriptions,
     };
 
     try {

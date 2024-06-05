@@ -6,16 +6,12 @@ import { createLinkArticleDtoSchema } from '../article-data/dto/create-link-data
 import { createPhotoArticleDtoSchema } from '../article-data/dto/create-photo-data.dto';
 import { createQuoteArticleDtoSchema } from '../article-data/dto/create-quote-data.dto';
 import { createTextArticleDtoSchema } from '../article-data/dto/create-text-data.dto';
-
-export class CreateArticleDto {
-  public type: ArticleType;
-  public authorId: string;
-  public tags?: string[];
-  public articleData: ArticleData;
-}
+import { ValidateViaJoi } from '@project/shared/core';
 
 export const createArticleDtoSchema = Joi.object({
-  type: Joi.string().required().valid(...Object.values(ArticleTypes)),
+  type: Joi.string()
+    .required()
+    .valid(...Object.values(ArticleTypes)),
   authorId: Joi.string(),
   tags: Joi.array().items(Joi.string()),
   articleData: Joi.alternatives()
@@ -45,3 +41,11 @@ export const createArticleDtoSchema = Joi.object({
     })
     .required(),
 }).options({ abortEarly: false });
+
+@ValidateViaJoi(createArticleDtoSchema)
+export class CreateArticleDto {
+  public type: ArticleType;
+  public authorId: string;
+  public tags?: string[];
+  public articleData: ArticleData;
+}

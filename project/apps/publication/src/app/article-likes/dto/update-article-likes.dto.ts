@@ -1,6 +1,13 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { ValidateViaJoi } from '@project/shared/core';
 import Joi from 'joi';
 
+export const updateArticleLikesDtoSchema = Joi.object({
+  articleId: Joi.string().required(),
+  authorId: Joi.string().required(),
+}).options({ abortEarly: false });
+
+@ValidateViaJoi(updateArticleLikesDtoSchema)
 export class UpdateArticleLikesDto {
   @ApiProperty({
     description: 'Publication id which the like relates to',
@@ -14,8 +21,3 @@ export class UpdateArticleLikesDto {
   })
   public authorId: string;
 }
-
-export const updateArticleLikesDtoSchema = Joi.object({
-  articleId: Joi.string().required(),
-  authorId: Joi.string().required(),
-}).options({ abortEarly: false });
