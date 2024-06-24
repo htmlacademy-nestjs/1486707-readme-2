@@ -46,6 +46,12 @@ Content-Type: application/json
 
 # Get articles
 
-GET http://localhost:3000/api/article HTTP/1.1
+GET http://localhost:3000/api/article/find?filterByType=video&sortByType=comments HTTP/1.1
+
+###
+
+# Search articles title
+
+GET http://localhost:3000/api/article/search?search=video HTTP/1.1
 
 ###
