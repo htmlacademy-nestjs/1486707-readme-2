@@ -7,12 +7,14 @@ import {
   ConfigUserModule,
   getMongooseOptions,
 } from '@project/shared/config/user';
+import { NotifyModule } from './notify/notify.module';
 
 @Module({
   imports: [
     AuthorModule,
     AuthenticationModule,
     ConfigUserModule,
+    NotifyModule,
     MongooseModule.forRootAsync(getMongooseOptions()),
   ],
   controllers: [],
