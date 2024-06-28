@@ -24,4 +24,19 @@ export class EmailSubscriberService {
       new EmailSubscriberEntity().populate(subscriber)
     );
   }
+
+  public async updateSubscriberLastUpdate(subscriber: CreateSubscriberDto) {
+    const { email } = subscriber;
+    const existsSubscriber = await this.emailSubscriberRepository.findByEmail(
+      email
+    );
+
+    if (existsSubscriber) {
+      return existsSubscriber;
+    }
+
+    const newDate = new Date();
+
+    return this.emailSubscriberRepository.setNewUpdateDate(email, newDate);
+  }
 }
