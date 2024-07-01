@@ -31,13 +31,16 @@ export enum ArticleSortType {
 }
 
 export interface ArticleFilter {
-  type?: ArticleType;
+  filterByType?: ArticleType;
+  filterByAuthor?: string;
+  filterByTags?: string[];
 }
 
-export interface ArticleQuery {
+export interface ArticleQuery extends ArticleFilter {
   limit?: number;
   take?: number;
-  filter?: ArticleFilter;
-  sort?: ArticleSortType;
+  sortByType?: ArticleSortType;
+  sortDirection?: 'desc' | 'asc';
   page?: number;
+  search?: string;
 }

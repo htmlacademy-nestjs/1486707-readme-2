@@ -29,9 +29,43 @@ export class ArticleController {
   @ApiResponse({
     type: ArticleRdo,
     status: HttpStatus.OK,
-    description: 'Comments found',
+    description: 'Articles found',
   })
-  @Get(':id')
+  @Get('/find')
+  public async findArticles(@Query() query: ArticleQuery) {
+    const articlesWithPagination = await this.articleService.getArticles(query);
+    const result = {
+      entities: articlesWithPagination.map((article) =>
+        fillDto(ArticleRdo, article.toPOJO())
+      ),
+    };
+    return result;
+  }
+
+  @ApiResponse({
+    type: ArticleRdo,
+    status: HttpStatus.OK,
+    description: 'Articles found',
+  })
+  @Get('/search')
+  public async search(@Query() query: ArticleQuery) {
+    const articlesWithPagination = await this.articleService.searchTitles(
+      query
+    );
+    const result = {
+      entities: articlesWithPagination.map((article) =>
+        fillDto(ArticleRdo, article.toPOJO())
+      ),
+    };
+    return result;
+  }
+
+  @ApiResponse({
+    type: ArticleRdo,
+    status: HttpStatus.OK,
+    description: 'Article found',
+  })
+  @Get('/:id')
   public async showArticles(@Param('id') id: string) {
     const article = await this.articleService.getArticle(id);
     return fillDto(ArticleRdo, article.toPOJO());
@@ -41,7 +75,7 @@ export class ArticleController {
     status: HttpStatus.CREATED,
     description: 'A new comment has been successfully created',
   })
-  @Post('create')
+  @Post('/create')
   public async create(@Body(JoiValidationPipe) dto: CreateArticleDto) {
     const newComment = await this.articleService.saveArticle(dto);
     return fillDto(ArticleRdo, newComment.toPOJO());
@@ -63,15 +97,5 @@ export class ArticleController {
   ) {
     const updatedArticle = await this.articleService.updateArticle(id, dto);
     return fillDto(ArticleRdo, updatedArticle.toPOJO());
-  }
-
-  @Get('/')
-  public async index(@Query() query: ArticleQuery) {
-    const articlesWithPagination = await this.articleService.getArticles(query);
-    const result = {
-      ...articlesWithPagination,
-      entities: articlesWithPagination.map((article) => article.toPOJO()),
-    };
-    return result;
   }
 }

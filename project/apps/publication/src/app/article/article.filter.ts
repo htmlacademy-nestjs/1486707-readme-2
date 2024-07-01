@@ -1,17 +1,36 @@
-import { Prisma } from "@prisma/client";
-import { ArticleFilter } from "./article.types";
+import { Prisma } from '@prisma/client';
+import { ArticleFilter } from './article.types';
 
+export const articleFilterToPrismaFilter = (
+  {
+    filterByType,
+    filterByAuthor,
+    filterByTags
+  }: ArticleFilter,
+): Prisma.ArticleWhereInput | undefined => {
+  if (!filterByType && !filterByAuthor && !filterByTags) {
+    return undefined;
+  }
 
-export const articleFilterToPrismaFilter = (filter: ArticleFilter): Prisma.ArticleWhereInput | undefined => {
-    if (!filter) {
-        return undefined;
-    }
+  const prismaFilter: Prisma.ArticleWhereInput = {};
 
-    const prismaFilter: Prisma.ArticleWhereInput = {};
+  if (filterByType) {
+    prismaFilter.type = filterByType;
+  }
 
-    if (filter.type) {
-        prismaFilter.type = filter.type;
-    }
+  if (filterByAuthor) {
+    prismaFilter.authorId = filterByAuthor;
+  }
 
-    return prismaFilter;
-}
+  if (filterByTags) {
+    prismaFilter.tags = {
+      some: {
+        id: {
+          in: filterByTags,
+        },
+      },
+    };
+  }
+
+  return prismaFilter;
+};

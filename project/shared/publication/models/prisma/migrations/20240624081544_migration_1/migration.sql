@@ -43,6 +43,7 @@ CREATE TABLE "video_data" (
 -- CreateTable
 CREATE TABLE "text_data" (
     "id" TEXT NOT NULL,
+    "title" TEXT NOT NULL,
     "text" TEXT NOT NULL,
     "preview" TEXT NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -84,11 +85,11 @@ CREATE TABLE "link_data" (
 );
 
 -- CreateTable
-CREATE TABLE "ArticleLikes" (
+CREATE TABLE "article_likes" (
     "article_id" TEXT NOT NULL,
     "author_id" TEXT NOT NULL,
 
-    CONSTRAINT "ArticleLikes_pkey" PRIMARY KEY ("article_id","author_id")
+    CONSTRAINT "article_likes_pkey" PRIMARY KEY ("article_id","author_id")
 );
 
 -- CreateTable
@@ -171,7 +172,7 @@ ALTER TABLE "article_to_article_data" ADD CONSTRAINT "article_to_article_data_ph
 ALTER TABLE "article_to_article_data" ADD CONSTRAINT "article_to_article_data_link_data_id_fkey" FOREIGN KEY ("link_data_id") REFERENCES "link_data"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "ArticleLikes" ADD CONSTRAINT "ArticleLikes_article_id_fkey" FOREIGN KEY ("article_id") REFERENCES "articles"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "article_likes" ADD CONSTRAINT "article_likes_article_id_fkey" FOREIGN KEY ("article_id") REFERENCES "articles"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "comments" ADD CONSTRAINT "comments_article_id_fkey" FOREIGN KEY ("article_id") REFERENCES "articles"("id") ON DELETE CASCADE ON UPDATE CASCADE;

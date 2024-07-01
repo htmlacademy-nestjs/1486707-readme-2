@@ -79,6 +79,7 @@ model VideoData {
 model TextData {
   id          String                 @id @default(uuid())
   articleData ArticleToArticleData[]
+  title       String
   text        String
   preview     String
   createdAt   DateTime               @default(now()) @map("created_at")

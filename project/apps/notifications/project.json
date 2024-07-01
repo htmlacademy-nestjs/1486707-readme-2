@@ -19,6 +19,12 @@
           "buildTarget": "notifications:build:production"
         }
       }
+    },
+    "docker:compose": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "docker compose --file apps/notifications/docker-compose.dev.yml --env-file apps/notifications/notifications.env --project-name 'readme_notifications' up -d"
+      }
     }
   }
 }

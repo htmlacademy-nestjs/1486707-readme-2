@@ -34,6 +34,7 @@ export interface VideoArticleData extends ArticleDataMeta {
 }
 
 export interface TextArticleData extends ArticleDataMeta {
+  title: string;
   text: string;
   preview: string;
 }
