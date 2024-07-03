@@ -5,6 +5,7 @@ export class TextDataEntity
   implements TextArticleData, Entity<string, TextArticleData>
 {
   public id?: string;
+  public title: string;
   public text: string;
   public preview: string;
   public createdAt?: Date;
@@ -12,6 +13,7 @@ export class TextDataEntity
 
   public populate(data: TextArticleData) {
     this.id = data.id;
+    this.title = data.title;
     this.text = data.text;
     this.preview = data.preview;
     this.createdAt = data.createdAt;
@@ -23,6 +25,7 @@ export class TextDataEntity
   public toPOJO(): TextArticleData {
     return {
       id: this.id,
+      title: this.title,
       text: this.text,
       preview: this.preview,
       createdAt: this.createdAt,

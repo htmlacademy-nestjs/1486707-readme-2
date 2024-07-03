@@ -127,4 +127,14 @@ export class ArticleService {
       throw new NotFoundException(`Articles for that query not found`);
     }
   }
+
+  public async searchTitles(query: ArticleQuery) {
+    try {
+      const foundArticles = await this.articleRepository.search(query);
+
+      return foundArticles;
+    } catch {
+      throw new NotFoundException(`Articles for that search query not found`);
+    }
+  }
 }
