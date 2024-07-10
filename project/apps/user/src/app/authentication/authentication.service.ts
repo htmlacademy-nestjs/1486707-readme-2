@@ -2,6 +2,7 @@ import {
   ConflictException,
   HttpException,
   HttpStatus,
+  Inject,
   Injectable,
   Logger,
   NotFoundException,
@@ -10,7 +11,7 @@ import {
 
 import { AuthorRepository } from '../author/author.repository';
 import { CreateUserDto } from './dto/create-user.dto';
-import { Token, TokenPayload, User, UserRole } from '@project/shared/app/types';
+import { Token, User, UserRole } from '@project/shared/app/types';
 import {
   AUTH_TOKEN_CREATION_ERROR,
   AUTH_USER_EXISTS,
@@ -21,6 +22,10 @@ import { AuthorEntity } from '../author/author.entity';
 import { LoginUserDto } from './dto/login-user.dto';
 import { ChangePasswordDto } from './dto/change-password.dto';
 import { JwtService } from '@nestjs/jwt';
+import { jwtConfig } from '@project/shared/config/user';
+import { ConfigType } from '@nestjs/config';
+import { RefreshTokenService } from '../refresh-token/refresh-token.service';
+import { createJWTPayload } from '@project/shared/helpers';
 
 @Injectable()
 export class AuthenticationService {
@@ -28,7 +33,10 @@ export class AuthenticationService {
 
   constructor(
     private readonly authorRepository: AuthorRepository,
-    private readonly jwtService: JwtService
+    private readonly jwtService: JwtService,
+    @Inject(jwtConfig.KEY)
+    private readonly jwtOptions: ConfigType<typeof jwtConfig>,
+    private readonly refreshTokenService: RefreshTokenService
   ) {}
 
   public async register(dto: CreateUserDto) {
@@ -69,6 +77,16 @@ export class AuthenticationService {
     return existUser;
   }
 
+  public async getUserByEmail(email: string) {
+    const existUser = await this.authorRepository.findByEmail(email);
+
+    if (!existUser) {
+      throw new NotFoundException(AUTH_USER_NOT_FOUND);
+    }
+
+    return existUser;
+  }
+
   public async changePassword(dto: ChangePasswordDto) {
     const user = await this.verifyUser(dto);
 
@@ -79,13 +97,23 @@ export class AuthenticationService {
   }
 
   public async createUserToken(user: User): Promise<Token> {
-    const payload: TokenPayload = {
-      sub: user.id,
+    const accessTokenPayload = createJWTPayload(user);
+    const refreshTokenPayload = {
+      ...accessTokenPayload,
+      tokenId: crypto.randomUUID(),
     };
 
     try {
-      const accessToken = await this.jwtService.signAsync(payload);
-      return { accessToken };
+      const accessToken = await this.jwtService.signAsync(accessTokenPayload);
+      const refreshToken = await this.jwtService.signAsync(
+        refreshTokenPayload,
+        {
+          secret: this.jwtOptions.refreshTokenSecret,
+          expiresIn: this.jwtOptions.refreshTokenExpiresIn,
+        }
+      );
+
+      return { accessToken, refreshToken };
     } catch (error) {
       throw new HttpException(
         AUTH_TOKEN_CREATION_ERROR,

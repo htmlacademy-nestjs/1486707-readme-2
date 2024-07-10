@@ -30,3 +30,9 @@ Content-Type: application/json
 }
 
 ###
+
+# Authorize with token
+POST http://localhost:3333/api/auth/refresh HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwiZW1haWwiOiJ1c2VyQG5vdGZvdW5kLmNvbSIsInNlY3JldCI6InNlY3JldCJ9.Pvmtl6TvRqxiVoh_lAOHUcswTodojnyoDLhjzVe4ZMg
+
+###
