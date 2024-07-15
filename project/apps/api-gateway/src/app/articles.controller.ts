@@ -9,7 +9,7 @@ import {
 import { AxiosExceptionFilter } from './filters/axios-exception.filter';
 import { CheckAuthGuard } from './guards/check-auth.guard';
 import { UserIdInterceptor } from './interceptors/userid.interceptor';
-import { CreateArticleDto } from './dto/create-article.dto';
+import { CreateArticleDto } from './dto/publications/create-article.dto';
 import { ApplicationServiceURL } from '@project/shared/config/api-gateway';
 import { HttpService } from '@nestjs/axios';
 

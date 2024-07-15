@@ -29,6 +29,7 @@ export class AuthorEntity implements User, Entity<string> {
   }
 
   public populate(data: User): void {
+    this.id = data.id ? data.id : undefined;
     this.name = data.name;
     this.email = data.email;
     this.role = data.role;
@@ -48,6 +49,6 @@ export class AuthorEntity implements User, Entity<string> {
   }
 
   public async comparePasswords(password: string): Promise<boolean> {
-    return compare(password, this.passwordHash);
+    return await compare(password, this.passwordHash);
   }
 }

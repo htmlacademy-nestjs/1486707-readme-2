@@ -71,7 +71,7 @@ export class AuthenticationController {
     @Body(JoiValidationPipe)
     dto: ChangePasswordDto
   ) {
-    await this.authService.changePassword(dto);
+    return await this.authService.changePassword(dto);
   }
 
   @ApiResponse({
@@ -91,7 +91,7 @@ export class AuthenticationController {
   })
   @UseGuards(JwtAuthGuard)
   @Post('check')
-  public async checkToken(@Req() { user: payload }: RequestWithUser) {
-    return payload;
+  public async checkToken(@Req() { user }: RequestWithUser) {
+    return user;
   }
 }

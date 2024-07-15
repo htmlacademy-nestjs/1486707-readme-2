@@ -8,6 +8,7 @@ import {
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
+import { randomUUID } from 'crypto';
 
 import { AuthorRepository } from '../author/author.repository';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -24,7 +25,6 @@ import { ChangePasswordDto } from './dto/change-password.dto';
 import { JwtService } from '@nestjs/jwt';
 import { jwtConfig } from '@project/shared/config/user';
 import { ConfigType } from '@nestjs/config';
-import { RefreshTokenService } from '../refresh-token/refresh-token.service';
 import { createJWTPayload } from '@project/shared/helpers';
 
 @Injectable()
@@ -35,8 +35,7 @@ export class AuthenticationService {
     private readonly authorRepository: AuthorRepository,
     private readonly jwtService: JwtService,
     @Inject(jwtConfig.KEY)
-    private readonly jwtOptions: ConfigType<typeof jwtConfig>,
-    private readonly refreshTokenService: RefreshTokenService
+    private readonly jwtOptions: ConfigType<typeof jwtConfig>
   ) {}
 
   public async register(dto: CreateUserDto) {
@@ -59,7 +58,9 @@ export class AuthenticationService {
 
     const userEntity = await new AuthorEntity(user).setPassword(password);
 
-    return this.authorRepository.save(userEntity);
+    const newUser = await this.authorRepository.save(userEntity);
+
+    return newUser;
   }
 
   public async verifyUser(dto: LoginUserDto) {
@@ -70,7 +71,9 @@ export class AuthenticationService {
       throw new NotFoundException(AUTH_USER_NOT_FOUND);
     }
 
-    if (!(await existUser.comparePasswords(password))) {
+    const doesPasswordMatch = await existUser.comparePasswords(password);
+
+    if (!doesPasswordMatch) {
       throw new UnauthorizedException(AUTH_USER_PASSWORD_WRONG);
     }
 
@@ -88,19 +91,21 @@ export class AuthenticationService {
   }
 
   public async changePassword(dto: ChangePasswordDto) {
-    const user = await this.verifyUser(dto);
+    const { email, password, newPassword } = dto;
+    const user = await this.verifyUser({ email, password });
 
-    const { newPassword } = dto;
-    user.setPassword(newPassword);
+    const updatedUser = await user.setPassword(newPassword);
 
-    await this.authorRepository.update(user.id, user);
+    const updatedEntity = await this.authorRepository.update(user.id, updatedUser);
+
+    return updatedEntity;
   }
 
   public async createUserToken(user: User): Promise<Token> {
     const accessTokenPayload = createJWTPayload(user);
     const refreshTokenPayload = {
       ...accessTokenPayload,
-      tokenId: crypto.randomUUID(),
+      tokenId: randomUUID(),
     };
 
     try {
