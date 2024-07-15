@@ -16,11 +16,16 @@
     "baseUrl": ".",
     "paths": {
       "@project/shared/app/types": ["shared/app/types/src/index.ts"],
+      "@project/shared/config/api-gateway": [
+        "shared/config/api-gateway/src/index.ts"
+      ],
       "@project/shared/config/file-vault": [
         "shared/config/file-vault/src/index.ts"
       ],
+      "@project/shared/config/notifications": [
+        "shared/config/notifications/src/index.ts"
+      ],
       "@project/shared/config/user": ["shared/config/user/src/index.ts"],
-      "@project/shared/config/notifications": ["shared/config/notifications/src/index.ts"],
       "@project/shared/core": ["shared/core/src/index.ts"],
       "@project/shared/helpers": ["shared/helpers/src/index.ts"],
       "@project/shared/publication/models": [

@@ -20,6 +20,7 @@ import { NotifyService } from '../notify/notify.service';
 import { AuthorEntity } from '../author/author.entity';
 import { LocalAuthGuard } from './guards/local-auth.guard';
 import { JwtRefreshGuard } from './guards/jwt-refresh.guard';
+import { JwtAuthGuard } from './guards/jwt-auth.guard';
 
 interface RequestWithUser {
   user?: AuthorEntity;
@@ -82,5 +83,15 @@ export class AuthenticationController {
   @HttpCode(HttpStatus.OK)
   public async refreshToken(@Req() { user }: RequestWithUser) {
     return this.authService.createUserToken(user);
+  }
+
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Check the token',
+  })
+  @UseGuards(JwtAuthGuard)
+  @Post('check')
+  public async checkToken(@Req() { user: payload }: RequestWithUser) {
+    return payload;
   }
 }
