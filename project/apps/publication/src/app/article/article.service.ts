@@ -150,4 +150,8 @@ export class ArticleService {
 
     return repostedArticle;
   }
+
+  public async getLatestArticles(checkDate: Date) {
+    return await this.articleRepository.getLatestArticles(checkDate);
+  }
 }

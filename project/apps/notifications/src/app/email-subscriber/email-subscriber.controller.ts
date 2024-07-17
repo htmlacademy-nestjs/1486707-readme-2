@@ -1,4 +1,4 @@
-import { Controller } from '@nestjs/common';
+import { Controller, Get } from '@nestjs/common';
 import { RabbitSubscribe } from '@golevelup/nestjs-rabbitmq';
 
 import { RabbitRouting } from '@project/shared/app/types';
@@ -6,7 +6,7 @@ import { EmailSubscriberService } from './email-subcriber.service';
 import { CreateSubscriberDto } from './dto/create-subscriber.dto';
 import { MailService } from '../mail/mail.service';
 
-@Controller()
+@Controller('notifications')
 export class EmailSubscriberController {
   constructor(
     private readonly subscriberService: EmailSubscriberService,
@@ -21,5 +21,10 @@ export class EmailSubscriberController {
   public async create(subscriber: CreateSubscriberDto) {
     await this.subscriberService.addSubscriber(subscriber);
     await this.mailService.sendNotifyNewSubscriber(subscriber);
+  }
+
+  @Get('/:id')
+  public async getSubscriber(id: string) {
+    return await this.subscriberService.getSubscriber(id);
   }
 }

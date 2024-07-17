@@ -12,7 +12,7 @@ export const articleSortToPrismaSort = (
   const prismaOrderBy: Prisma.ArticleOrderByWithRelationInput = {};
 
   if (sortByType === ArticleSortType.DATE) {
-    prismaOrderBy.createdAt = sortDirection;
+    prismaOrderBy.publishedAt = sortDirection;
   }
 
   if (sortByType === ArticleSortType.COMMENTS) {

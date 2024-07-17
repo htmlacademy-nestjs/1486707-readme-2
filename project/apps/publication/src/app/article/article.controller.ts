@@ -19,6 +19,7 @@ import { UpdateArticleDto } from './dto/update-article.dto';
 import { JoiValidationPipe } from '@project/shared/core';
 import { ArticleQuery } from '@project/shared/app/types';
 import { RepostArticleDto } from './dto/repost-article.dto';
+import { UpdateArticleLikesDto } from '../article-likes/dto/update-article-likes.dto';
 
 @Controller('article')
 export class ArticleController {
@@ -74,7 +75,7 @@ export class ArticleController {
 
   @ApiResponse({
     status: HttpStatus.CREATED,
-    description: 'A new comment has been successfully created',
+    description: 'A new article has been successfully created',
   })
   @Post('/create')
   public async create(@Body(JoiValidationPipe) dto: CreateArticleDto) {
@@ -108,5 +109,16 @@ export class ArticleController {
       articleId
     );
     return repostedArticle;
+  }
+
+  @Post('/like')
+  public async likeArticle(@Body() dto: UpdateArticleLikesDto) {
+    const { articleId, authorId } = dto;
+    const newLikes = await this.articleLikesService.updateArticleLikes(
+      articleId,
+      authorId
+    );
+
+    return newLikes;
   }
 }

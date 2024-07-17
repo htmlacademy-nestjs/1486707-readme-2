@@ -225,4 +225,25 @@ export class ArticleRepository extends BasePostgresRepository<
 
     return this.createEntityFromDocument(repostedArticle);
   }
+
+  public async getLatestArticles(checkDate: Date): Promise<ArticleEntity[]> {
+    const documents = await this.client.article.findMany({
+      where: {
+        publishedAt: {
+          gte: checkDate,
+        },
+      },
+      orderBy: {
+        publishedAt: 'desc',
+      },
+      include: {
+        articleDataIds: true,
+        comments: true,
+        likes: true,
+        tags: true,
+      },
+    });
+
+    return documents.map((document) => this.createEntityFromDocument(document));
+  }
 }

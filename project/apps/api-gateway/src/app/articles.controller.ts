@@ -1,7 +1,9 @@
 import {
   Body,
+  ConflictException,
   Controller,
   Delete,
+  ForbiddenException,
   Get,
   Param,
   Patch,
@@ -51,6 +53,19 @@ export class ArticlesController {
       }
     );
     return data;
+  }
+
+  // @UseInterceptors(UserIdInterceptor)
+  @Post('/like/:id')
+  public async likeArticle(@Param('id') id: string) {
+    const { data } = await this.httpService.axiosRef.post(
+      `${ApplicationServiceURL.Articles}/like`,
+      {
+        articleId: id,
+        // userId
+      }
+    );
+    return DataTransfer;
   }
 
   @Get('/find')
@@ -156,8 +171,17 @@ export class ArticlesController {
     return { data };
   }
 
+  // @UseInterceptors(UserIdInterceptor)
   @Delete('delete-comment/:id')
   public async deleteComment(@Param('id') id: string) {
+    const { data: comment } = await this.httpService.axiosRef.get(
+      `${ApplicationServiceURL.Comments}/get/${id}`
+    );
+
+    // if (comment.authorId !== userId) {
+    //   throw new ForbiddenException('The author cannot delete this comment')
+    // }
+
     const { data } = await this.httpService.axiosRef.delete(
       `${ApplicationServiceURL.Comments}/delete/${id}`
     );

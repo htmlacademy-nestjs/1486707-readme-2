@@ -5,6 +5,7 @@ export enum ApplicationServiceURL {
   Tags = 'http://localhost:3000/api/tags',
   Auth = 'http://localhost:3004/api/auth',
   Users = 'http://localhost:3004/api/author',
+  Notifications = 'http://localhost:3002/api/notifications',
 }
 
 export const HTTP_CLIENT_MAX_REDIRECTS = 5;
