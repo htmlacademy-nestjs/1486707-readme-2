@@ -1,5 +1,5 @@
 import { jwtConfig } from '@project/shared/config/user';
-import { RefreshTokenRepository } from './refresh.token.repository';
+import { RefreshTokenRepository } from './refresh-token.repository';
 import { parseTime } from '@project/shared/helpers';
 import { RefreshTokenEntity } from './refresh-token.entity';
 import dayjs from 'dayjs';
@@ -27,17 +27,17 @@ export class RefreshTokenService {
     return this.refreshTokenRepository.save(refreshToken);
   }
 
-  public async doesExist(tokenId: string) {
-    const refreshToken = await this.refreshTokenRepository.findById(tokenId);
+  public async doesExist(tokenId: string): Promise<boolean> {
+    const refreshToken = await this.refreshTokenRepository.findByTokenId(tokenId);
     return refreshToken !== null;
   }
 
-  public async deleteRefreshSession(tokenId: string): Promise<boolean> {
-    const refreshToken = await this.refreshTokenRepository.findById(tokenId);
-    return refreshToken !== null;
+  public async deleteRefreshSession(tokenId: string) {
+    await this.deleteExpiredRefreshTokens();
+    return this.refreshTokenRepository.deleteById(tokenId);
   }
 
   public async deleteExpiredRefreshTokens() {
-    return this.refreshTokenRepository.deleteByExpiredTokens();
+    return await this.refreshTokenRepository.deleteByExpiredTokens();
   }
 }

@@ -74,23 +74,23 @@ export class AuthenticationController {
     return await this.authService.changePassword(dto);
   }
 
+  @UseGuards(JwtRefreshGuard)
+  @Post('refresh')
+  @HttpCode(HttpStatus.OK)
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'Get a new access/refresh tokens',
   })
-  @UseGuards(JwtRefreshGuard)
-  @Post('refresh')
-  @HttpCode(HttpStatus.OK)
   public async refreshToken(@Req() { user }: RequestWithUser) {
     return this.authService.createUserToken(user);
   }
 
+  @UseGuards(JwtAuthGuard)
+  @Post('check')
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'Check the token',
   })
-  @UseGuards(JwtAuthGuard)
-  @Post('check')
   public async checkToken(@Req() { user }: RequestWithUser) {
     return user;
   }

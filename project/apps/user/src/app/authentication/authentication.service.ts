@@ -26,6 +26,7 @@ import { JwtService } from '@nestjs/jwt';
 import { jwtConfig } from '@project/shared/config/user';
 import { ConfigType } from '@nestjs/config';
 import { createJWTPayload } from '@project/shared/helpers';
+import { RefreshTokenService } from '../refresh-token/refresh-token.service';
 
 @Injectable()
 export class AuthenticationService {
@@ -35,7 +36,8 @@ export class AuthenticationService {
     private readonly authorRepository: AuthorRepository,
     private readonly jwtService: JwtService,
     @Inject(jwtConfig.KEY)
-    private readonly jwtOptions: ConfigType<typeof jwtConfig>
+    private readonly jwtOptions: ConfigType<typeof jwtConfig>,
+    private readonly refreshTokenService: RefreshTokenService
   ) {}
 
   public async register(dto: CreateUserDto) {
@@ -96,7 +98,10 @@ export class AuthenticationService {
 
     const updatedUser = await user.setPassword(newPassword);
 
-    const updatedEntity = await this.authorRepository.update(user.id, updatedUser);
+    const updatedEntity = await this.authorRepository.update(
+      user.id,
+      updatedUser
+    );
 
     return updatedEntity;
   }
@@ -107,6 +112,7 @@ export class AuthenticationService {
       ...accessTokenPayload,
       tokenId: randomUUID(),
     };
+    await this.refreshTokenService.createRefreshSession(refreshTokenPayload);
 
     try {
       const accessToken = await this.jwtService.signAsync(accessTokenPayload);

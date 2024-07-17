@@ -35,10 +35,9 @@ Content-Type: application/json
 
 # Get a new JWT pair
 POST http://localhost:4000/api/users/refresh HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwiZW1haWwiOiJ1c2VyQG5vdGZvdW5kLmNvbSIsInNlY3JldCI6InNlY3JldCJ9.Pvmtl6TvRqxiVoh_lAOHUcswTodojnyoDLhjzVe4ZMg
-
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NjU4NTVlMWQxNmQwM2UxOGE4MWIxOGYiLCJlbWFpbCI6InVzZXJAbm90Zm91bmQuY29tIiwidG9rZW5JZCI6Ijk2N2QwYWJkLTdlYTctNGY3Ni1iMzI1LTBhMDdiZmY1ZjRiNiIsImlhdCI6MTcyMTIyMzMyOSwiZXhwIjoxNzIxMjI4NzI5fQ.4Ns9JhxEcHUd95HvdEBgFNPQ9ox-d0DkMgVz8KOhIRM
 ###
 
 # Get user by ID
 GET http://localhost:4000/api/users/user@notfound.com HTTP/1.1
-###
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NjU4NTVlMWQxNmQwM2UxOGE4MWIxOGYiLCJlbWFpbCI6InVzZXJAbm90Zm91bmQuY29tIiwiaWF0IjoxNzIxMjIzNzY4LCJleHAiOjE3MjEyMjM4Njh9.5MZr4qjhMFfPHCsuvBKBCmAKTLyT1AFcgZEOZ3qbWAQ

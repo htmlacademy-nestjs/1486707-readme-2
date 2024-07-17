@@ -61,7 +61,7 @@ export function parseTime(time: string): TimeAndUnit {
   const value = parseInt(valueRaw, 10);
   const unit = unitRaw as DateTimeUnit;
 
-  if (!isNaN(value)) {
+  if (isNaN(value)) {
     throw new Error(`[parseTime] Can't parse value count. Result is Nan.`);
   }
 

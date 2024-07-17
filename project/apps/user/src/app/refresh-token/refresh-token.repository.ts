@@ -3,6 +3,7 @@ import { BaseMongoRepository } from '@project/shared/core';
 import { RefreshTokenModel } from './refresh-token.model';
 import { RefreshTokenEntity } from './refresh-token.entity';
 import { Model } from 'mongoose';
+import { JwtToken } from '@project/shared/app/types';
 
 export class RefreshTokenRepository extends BaseMongoRepository<
   RefreshTokenEntity,
@@ -19,9 +20,8 @@ export class RefreshTokenRepository extends BaseMongoRepository<
     await this.model.deleteOne({ tokenId: id }).exec();
   }
 
-  public async findById(id: string): Promise<RefreshTokenEntity | null> {
-    const token = await this.model.findOne({ tokenId: id }).exec();
-    return this.createEntitiyFromDocument(token);
+  public async findByTokenId(tokenId: string): Promise<JwtToken | null> {
+    return await this.model.findOne({ tokenId }).exec();
   }
 
   public async deleteByExpiredTokens() {

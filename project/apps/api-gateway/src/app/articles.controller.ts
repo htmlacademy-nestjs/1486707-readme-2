@@ -1,6 +1,5 @@
 import {
   Body,
-  ConflictException,
   Controller,
   Delete,
   ForbiddenException,
@@ -30,11 +29,11 @@ import { CreateCommentDto } from './dto/publications/create-comment.dto';
 export class ArticlesController {
   constructor(private readonly httpService: HttpService) {}
 
-  // @UseGuards(CheckAuthGuard)
-  // @UseInterceptors(UserIdInterceptor)
+  @UseGuards(CheckAuthGuard)
+  @UseInterceptors(UserIdInterceptor)
   @Post('/create')
-  public async create(@Body() dto: CreateArticleDto) {
-    // dto.authorId = userId;
+  public async create(@Body() dto: CreateArticleDto & { userId: string }) {
+    dto.authorId = dto.userId;
     const { data: articleData } = await this.httpService.axiosRef.post(
       `${ApplicationServiceURL.Articles}/create`,
       dto
@@ -42,30 +41,35 @@ export class ArticlesController {
     return articleData;
   }
 
-  // @UseInterceptors(UserIdInterceptor)
+  @UseGuards(CheckAuthGuard)
+  @UseInterceptors(UserIdInterceptor)
   @Post('/repost')
-  public async repost(@Param('articleId') articleId: string) {
+  public async repost(
+    @Param('articleId') articleId: string,
+    @Body() { userId }
+  ) {
     const { data } = await this.httpService.axiosRef.post(
       `${ApplicationServiceURL.Articles}/repost`,
       {
-        // userId,
+        userId,
         articleId,
       }
     );
     return data;
   }
 
-  // @UseInterceptors(UserIdInterceptor)
+  @UseGuards(CheckAuthGuard)
+  @UseInterceptors(UserIdInterceptor)
   @Post('/like/:id')
-  public async likeArticle(@Param('id') id: string) {
+  public async likeArticle(@Param('id') id: string, @Body() { userId }) {
     const { data } = await this.httpService.axiosRef.post(
       `${ApplicationServiceURL.Articles}/like`,
       {
         articleId: id,
-        // userId
+        userId,
       }
     );
-    return DataTransfer;
+    return data;
   }
 
   @Get('/find')
@@ -171,16 +175,17 @@ export class ArticlesController {
     return { data };
   }
 
-  // @UseInterceptors(UserIdInterceptor)
+  @UseGuards(CheckAuthGuard)
+  @UseInterceptors(UserIdInterceptor)
   @Delete('delete-comment/:id')
-  public async deleteComment(@Param('id') id: string) {
+  public async deleteComment(@Param('id') id: string, @Body() { userId }) {
     const { data: comment } = await this.httpService.axiosRef.get(
       `${ApplicationServiceURL.Comments}/get/${id}`
     );
 
-    // if (comment.authorId !== userId) {
-    //   throw new ForbiddenException('The author cannot delete this comment')
-    // }
+    if (comment.authorId !== userId) {
+      throw new ForbiddenException('The author cannot delete this comment');
+    }
 
     const { data } = await this.httpService.axiosRef.delete(
       `${ApplicationServiceURL.Comments}/delete/${id}`

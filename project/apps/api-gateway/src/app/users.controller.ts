@@ -8,6 +8,7 @@ import {
   Post,
   Req,
   UseFilters,
+  UseGuards,
 } from '@nestjs/common';
 import { Request } from 'express';
 
@@ -16,6 +17,7 @@ import { ApplicationServiceURL } from '@project/shared/config/api-gateway';
 import { AxiosExceptionFilter } from './filters/axios-exception.filter';
 import { CreateUserDto } from './dto/users/create-user.dto';
 import { ChangePasswordDto } from './dto/users/change-password.dto';
+import { CheckAuthGuard } from './guards/check-auth.guard';
 
 @Controller('users')
 @UseFilters(AxiosExceptionFilter)
@@ -74,6 +76,7 @@ export class UsersController {
     return data;
   }
 
+  @UseGuards(CheckAuthGuard)
   @Get(':id')
   public async getUser(@Param('id') id: string) {
     const { data: userData } = await this.httpService.axiosRef.get(
