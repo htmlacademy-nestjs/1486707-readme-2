@@ -16,8 +16,9 @@ import { fillDto } from '@project/shared/helpers';
 import { CreateArticleDto } from './dto/create-article.dto';
 import { ArticleLikesService } from '../article-likes/article-likes.service';
 import { UpdateArticleDto } from './dto/update-article.dto';
-import { ArticleQuery } from './article.types';
 import { JoiValidationPipe } from '@project/shared/core';
+import { ArticleQuery } from '@project/shared/app/types';
+import { RepostArticleDto } from './dto/repost-article.dto';
 
 @Controller('article')
 export class ArticleController {
@@ -97,5 +98,15 @@ export class ArticleController {
   ) {
     const updatedArticle = await this.articleService.updateArticle(id, dto);
     return fillDto(ArticleRdo, updatedArticle.toPOJO());
+  }
+
+  @Post('/repost')
+  public async repost(@Body(JoiValidationPipe) dto: RepostArticleDto) {
+    const { articleId, authorId } = dto;
+    const repostedArticle = await this.articleService.repostArticle(
+      authorId,
+      articleId
+    );
+    return repostedArticle;
   }
 }

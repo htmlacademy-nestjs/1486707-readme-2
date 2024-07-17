@@ -1,5 +1,5 @@
 import { Prisma } from '@prisma/client';
-import { ArticleFilter } from './article.types';
+import { ArticleFilter } from '@project/shared/app/types';
 
 export const articleFilterToPrismaFilter = (
   {

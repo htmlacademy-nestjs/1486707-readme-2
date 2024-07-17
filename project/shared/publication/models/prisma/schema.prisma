@@ -23,16 +23,19 @@ enum ArticleType {
 }
 
 model Article {
-  id             String                @id @default(uuid())
-  authorId       String                @map("author_id")
-  type           ArticleType
-  articleDataIds ArticleToArticleData?
-  isRepost       Boolean?              @map("is_repost")
-  likes          ArticleLikes[]
-  tags           Tag[]
-  comments       Comment[]
-  createdAt      DateTime              @default(now()) @map("created_at")
-  updatedAt      DateTime              @updatedAt @map("updated_at")
+  id               String                @id @default(uuid())
+  originalId       String?               @map("original_id")
+  authorId         String                @map("author_id")
+  originalAuthorId String                @map("original_author_id")
+  type             ArticleType
+  articleDataIds   ArticleToArticleData?
+  isRepost         Boolean?              @map("is_repost")
+  likes            ArticleLikes[]
+  tags             Tag[]
+  comments         Comment[]
+  publishedAt      DateTime              @default(now()) @map("published_at")
+  createdAt        DateTime              @default(now()) @map("created_at")
+  updatedAt        DateTime              @updatedAt @map("updated_at")
 
   @@index([authorId])
   @@map("articles")

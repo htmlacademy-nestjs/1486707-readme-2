@@ -1,0 +1,128 @@
+# Get article by Id
+
+GET http://localhost:4000/api/articles/6d308040-96a2-4162-bea6-2338e9976540 HTTP/1.1
+
+###
+
+# Create a new article
+
+POST http://localhost:4000/api/articles/create HTTP/1.1
+Content-Type: application/json
+
+{
+  "type": "link",
+  "authorId": "random author",
+  "tags": ["39614113-7ad5-45b6-8093-06455437e1e2"],
+  "articleData": {
+    "link": "test new article link string",
+    "description": "test new article link description"
+  }
+}
+
+###
+
+# Delete an article by id
+
+DELETE http://localhost:4000/api/articles/delete/872fa97e-ea14-45ba-9fdf-07e374bd8d4e HTTP/1.1
+
+###
+
+# Update an article by id
+
+PATCH http://localhost:4000/api/articles/update/ab04593b-da99-4fe3-8b4b-e06d82e2efdd HTTP/1.1
+Content-Type: application/json
+
+{
+  "type": "link",
+  "authorId": "random updated author",
+  "tags": ["39614113-7ad5-45b6-8093-06455437e1e2"],
+  "articleData": {
+    "link": "test updated article link string",
+    "description": "test updated article link description"
+  }
+}
+
+###
+
+# Get articles
+
+GET http://localhost:4000/api/articles/find?filterByType=video&sortByType=comments HTTP/1.1
+
+###
+
+# Search articles title
+
+GET http://localhost:4000/api/articles/search?search=video HTTP/1.1
+
+###
+
+# Get tag by Id
+
+GET http://localhost:4000/api/articles/get-tag/efd775e2-df55-4e0e-a308-58249f5ea202 HTTP/1.1
+
+###
+
+# Create a new category
+
+POST http://localhost:4000/api/articles/create-tag HTTP/1.1
+Content-Type: application/json
+
+{
+  "title": "Http created test tag"
+}
+
+###
+
+# Delete a category by id
+
+DELETE http://localhost:4000/api/articles/delete-tag/331cec9c-69d3-4f30-91be-cf6041086e91 HTTP/1.1
+
+###
+
+# Update a category by id
+
+PATCH http://localhost:4000/api/articles/update-tag/efd775e2-df55-4e0e-a308-58249f5ea202 HTTP/1.1
+Content-Type: application/json
+
+{
+  "title": "Http updated tag"
+}
+
+###
+
+# Get comments by article Id
+
+GET http://localhost:4000/api/articles/get-comments/6d308040-96a2-4162-bea6-2338e9976540 HTTP/1.1
+
+###
+
+# Create a new comment
+
+POST http://localhost:4000/api/articles/create-comment HTTP/1.1
+Content-Type: application/json
+
+{
+  "articleId": "6d308040-96a2-4162-bea6-2338e9976540",
+  "authorId": "665855e1d16d03e18a81b18f",
+  "text": "Http created test comment"
+}
+
+###
+
+# Delete a comment by comment id
+
+DELETE http://localhost:4000/api/articles/delete-comment/6e6557e3-e082-4ced-b87f-326ef2c6be13 HTTP/1.1
+
+###
+
+# Repost an article
+
+POST http://localhost:4000/api/articles/repost HTTP/1.1
+Content-Type: application/json
+
+{
+  "authorId": "665855e1d16d03e18a81b18f",
+  "articleId": "6d308040-96a2-4162-bea6-2338e9976540"
+}
+
+###

@@ -1,5 +1,14 @@
 import { HttpService } from '@nestjs/axios';
-import { Body, Controller, Patch, Post, Req, UseFilters } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Patch,
+  Post,
+  Req,
+  UseFilters,
+} from '@nestjs/common';
 import { Request } from 'express';
 
 import { LoginUserDto } from './dto/users/login-user.dto';
@@ -14,12 +23,22 @@ export class UsersController {
   constructor(private readonly httpService: HttpService) {}
 
   @Post('register')
-  public async create(@Body() createUserDto: CreateUserDto) {
-    const { data } = await this.httpService.axiosRef.post(
+  public async create(@Body() dto: CreateUserDto) {
+    if (dto.avatar) {
+      const { data: fileData } = await this.httpService.axiosRef.post(
+        `${ApplicationServiceURL.Files}/upload`,
+        dto.avatar
+      );
+
+      dto.avatar = fileData.id;
+    }
+
+    const { data: userData } = await this.httpService.axiosRef.post(
       `${ApplicationServiceURL.Auth}/register`,
-      createUserDto
+      dto
     );
-    return data;
+
+    return userData;
   }
 
   @Post('login')
@@ -53,5 +72,27 @@ export class UsersController {
     );
 
     return data;
+  }
+
+  @Get(':id')
+  public async getUser(@Param('id') id: string) {
+    const { data: userData } = await this.httpService.axiosRef.get(
+      `${ApplicationServiceURL.Users}/${id}`
+    );
+
+    const { data: articlesData } = await this.httpService.axiosRef.get(
+      `${ApplicationServiceURL.Articles}/find?filterByAuthor=${id}`
+    );
+
+    userData.articlesCount = articlesData.entities.length;
+
+    if (userData.avatar) {
+      const { data: fileData } = await this.httpService.axiosRef.get(
+        `${ApplicationServiceURL.Files}/${userData.avatar}`
+      );
+
+      userData.avatar = fileData;
+    }
+    return userData;
   }
 }

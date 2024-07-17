@@ -5,18 +5,11 @@ import { Expose } from 'class-transformer';
 @Injectable()
 export class AuthorRdo {
   @ApiProperty({
-    description: 'User unique id',
-    example: 'a12',
-  })
-  @Expose()
-  public id: string;
-
-  @ApiProperty({
     description: 'User avatar',
     example: 'abcde1234',
   })
   @Expose()
-  public avatar: string;
+  public avatar: unknown;
 
   @ApiProperty({
     description: 'User unique email',

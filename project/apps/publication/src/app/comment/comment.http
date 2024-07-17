@@ -10,8 +10,8 @@ POST http://localhost:3000/api/comment/create HTTP/1.1
 Content-Type: application/json
 
 {
-  "articleId": "ab04593b-da99-4fe3-8b4b-e06d82e2efdd",
-  "authorId": "random author id",
+  "articleId": "6d308040-96a2-4162-bea6-2338e9976540",
+  "authorId": "665855e1d16d03e18a81b18f",
   "text": "Http created test comment"
 }
 
@@ -19,6 +19,6 @@ Content-Type: application/json
 
 # Delete a comment by comment id
 
-DELETE http://localhost:3000/api/comment/delete/465db336-8e9f-4d36-8051-fb40501c542b HTTP/1.1
+DELETE http://localhost:3000/api/comment/delete/088aef23-daba-43fa-a16f-143902078bb6 HTTP/1.1
 
 ###

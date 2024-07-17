@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "serve-all": "nx run-many --parallel --maxParallel=5  --target=serve --projects=api-gateway,file-vault,publication,user,notifications"
+    "serve-all": "nx run-many --parallel --maxParallel=5  --target=serve --projects=api-gateway,file-vault,publication,user,notifications",
+    "format-prisma-schema": "npx prisma format --schema ./shared/publication/models/prisma/schema.prisma"
   },
   "private": true,
   "dependencies": {

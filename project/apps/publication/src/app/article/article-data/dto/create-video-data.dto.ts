@@ -7,7 +7,7 @@ export class CreateVideoArticleDto {
 }
 
 export const createVideoArticleDtoSchema = Joi.object({
-  title: Joi.string().required(),
-  link: Joi.string().required(),
+  title: Joi.string().min(20).max(50).required(),
+  link: Joi.string().pattern(/^https:\/\/www\.youtube\.com\/watch\?v=/).required(),
   video: Joi.string().required(),
 }).options({ abortEarly: false });

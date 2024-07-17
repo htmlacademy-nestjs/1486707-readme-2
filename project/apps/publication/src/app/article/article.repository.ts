@@ -2,10 +2,13 @@ import { Injectable } from '@nestjs/common';
 import { BasePostgresRepository } from '@project/shared/core';
 import { ArticleEntity } from './article.entity';
 import { PrismaClientService } from '@project/shared/publication/models';
-import { Article } from '@project/shared/app/types';
+import {
+  Article,
+  ArticleQuery,
+  ArticleSortType,
+} from '@project/shared/app/types';
 import { articleFilterToPrismaFilter } from './article.filter';
 import { ARTICLE_LIMIT } from './article.constants';
-import { ArticleQuery, ArticleSortType } from './article.types';
 import { articleSortToPrismaSort } from './article.sort';
 
 @Injectable()
@@ -38,6 +41,7 @@ export class ArticleRepository extends BasePostgresRepository<
     const record = await this.client.article.create({
       data: {
         ...pojoEntity,
+        originalAuthorId: pojoEntity.authorId,
         articleDataIds: {
           create: {
             ...pojoEntity.articleDataIds,
@@ -47,7 +51,7 @@ export class ArticleRepository extends BasePostgresRepository<
           create: pojoEntity.comments,
         },
         likes: {
-          create: [],
+          create: pojoEntity.likes,
         },
         tags: {
           connect: pojoEntity.tags.map(({ id }) => ({ id })),
@@ -61,6 +65,7 @@ export class ArticleRepository extends BasePostgresRepository<
     });
 
     entity.id = record.id;
+    entity.originalId = record.id;
     return entity;
   }
 
@@ -74,8 +79,7 @@ export class ArticleRepository extends BasePostgresRepository<
       data: {
         id,
         type: pojoEntity.type,
-        authorId: pojoEntity.authorId,
-        isRepost: pojoEntity.isRepost,
+        publishedAt: new Date(),
         articleDataIds: {
           update: pojoEntity.articleDataIds,
         },
@@ -167,5 +171,58 @@ export class ArticleRepository extends BasePostgresRepository<
     });
 
     return documents.map((document) => this.createEntityFromDocument(document));
+  }
+
+  public async repostArticle(
+    authorId: string,
+    articleId: string
+  ): Promise<ArticleEntity | null> {
+    const article = await this.client.article.findFirst({
+      where: {
+        id: articleId,
+      },
+      include: {
+        tags: true,
+        comments: true,
+        articleDataIds: true,
+        likes: true,
+      },
+    });
+
+    if (!article) {
+      return null;
+    }
+
+    article.originalId = article.id;
+    delete article.id;
+
+    const repostedArticle = await this.client.article.create({
+      data: {
+        ...article,
+        authorId,
+        publishedAt: new Date(),
+        isRepost: true,
+        articleDataIds: {
+          connect: { id: article.articleDataIds?.id },
+        },
+        comments: {
+          create: [],
+        },
+        likes: {
+          create: [],
+        },
+        tags: {
+          connect: article.tags.map(({ id }) => ({ id })),
+        },
+      },
+      include: {
+        articleDataIds: true,
+        tags: true,
+        comments: true,
+        likes: true,
+      },
+    });
+
+    return this.createEntityFromDocument(repostedArticle);
   }
 }

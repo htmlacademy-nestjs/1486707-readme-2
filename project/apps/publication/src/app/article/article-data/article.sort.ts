@@ -1,5 +1,5 @@
 import { Prisma } from '@prisma/client';
-import { ArticleSortType } from '../article.types';
+import { ArticleSortType } from '@project/shared/app/types';
 
 export type ArticleSort = ArticleSortType;
 

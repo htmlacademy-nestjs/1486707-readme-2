@@ -6,7 +6,7 @@ import { ValidateViaJoi } from '@project/shared/core';
 export const changePasswordDtoSchema = Joi.object({
   email: Joi.string().email().required(),
   password: Joi.string().required(),
-  newPassword: Joi.string().required(),
+  newPassword: Joi.string().min(6).max(12).required(),
 }).options({ abortEarly: false });
 
 @ValidateViaJoi(changePasswordDtoSchema)

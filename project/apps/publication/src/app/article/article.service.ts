@@ -7,7 +7,7 @@ import { PublicationTagService } from '../publication-tag/publication-tag.servic
 import { UpdateArticleDto } from './dto/update-article.dto';
 import { CommentService } from '../comment/comment.service';
 import { ArticleMetaDataService } from './article-data/article-meta-data.service';
-import { ArticleQuery } from './article.types';
+import { ArticleQuery } from '@project/shared/app/types';
 
 @Injectable()
 export class ArticleService {
@@ -136,5 +136,18 @@ export class ArticleService {
     } catch {
       throw new NotFoundException(`Articles for that search query not found`);
     }
+  }
+
+  public async repostArticle(authorId: string, articleId: string) {
+    const repostedArticle = await this.articleRepository.repostArticle(
+      authorId,
+      articleId
+    );
+
+    if (!repostedArticle) {
+      throw new NotFoundException(`Article not found`);
+    }
+
+    return repostedArticle;
   }
 }

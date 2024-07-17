@@ -23,7 +23,7 @@ Content-Type: application/json
 
 # Delete an article by id
 
-DELETE http://localhost:3000/api/article/delete/074ef203-cf63-441a-8530-4f3f2ae35b3f HTTP/1.1
+DELETE http://localhost:3000/api/article/delete/8296c3c2-60fa-4b5a-aca9-539f9a6da4fe HTTP/1.1
 
 ###
 
@@ -53,5 +53,17 @@ GET http://localhost:3000/api/article/find?filterByType=video&sortByType=comment
 # Search articles title
 
 GET http://localhost:3000/api/article/search?search=video HTTP/1.1
+
+###
+
+# Repost an article
+
+POST http://localhost:3000/api/article/repost HTTP/1.1
+Content-Type: application/json
+
+{
+  "authorId": "665855e1d16d03e18a81b18f",
+  "articleId": "6d308040-96a2-4162-bea6-2338e9976540"
+}
 
 ###

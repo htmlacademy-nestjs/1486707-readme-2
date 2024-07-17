@@ -5,5 +5,5 @@ export class CreatePhotoArticleDto {
 }
 
 export const createPhotoArticleDtoSchema = Joi.object({
-  photo: Joi.string().required(),
+  photo: Joi.binary().max(1000000).required(),
 }).options({ abortEarly: false });
