@@ -22,7 +22,7 @@ export class EmailSubscriberEntity
     this.id = data.id ?? undefined;
     this.email = data.email;
     this.name = data.name;
-    this.lastUpdate = data.lastUpdate;
+    this.lastUpdate = data.lastUpdate || new Date();
 
     return this;
   }

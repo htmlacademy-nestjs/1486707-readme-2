@@ -15,9 +15,10 @@ import { QuoteDataRepository } from './article-data/quote-data.repository';
 import { TextDataRepository } from './article-data/text-data.repository';
 import { VideoDataRepository } from './article-data/video-data.repository';
 import { ArticleMetaDataService } from './article-data/article-meta-data.service';
+import { NotifyModule } from '../notify/notify.module';
 
 @Module({
-  imports: [PrismaClientModule],
+  imports: [PrismaClientModule, NotifyModule],
   controllers: [ArticleController],
   providers: [
     ArticleService,

@@ -1,10 +1,4 @@
-import {
-  Controller,
-  Get,
-  HttpStatus,
-  Param,
-  UseGuards,
-} from '@nestjs/common';
+import { Controller, Get, HttpStatus, Param, UseGuards } from '@nestjs/common';
 import { AuthorService } from './author.service';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { fillDto } from '@project/shared/helpers';

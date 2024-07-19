@@ -3,9 +3,9 @@ POST http://localhost:4000/api/users/register HTTP/1.1
 Content-Type: application/json
 
 {
-  "email": "user@notfound.com",
-  "name": "Keks",
-  "password": "123456",
+  "email": "user@notfound2.com",
+  "name": "Keks2",
+  "password": "123456"
 }
 
 ###
@@ -15,7 +15,7 @@ POST http://localhost:4000/api/users/login HTTP/1.1
 Content-Type: application/json
 
 {
-  "email": "user@notfound.com",
+  "email": "user@notfound2.com",
   "password": "123456"
 }
 
@@ -38,6 +38,6 @@ POST http://localhost:4000/api/users/refresh HTTP/1.1
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NjU4NTVlMWQxNmQwM2UxOGE4MWIxOGYiLCJlbWFpbCI6InVzZXJAbm90Zm91bmQuY29tIiwidG9rZW5JZCI6Ijk2N2QwYWJkLTdlYTctNGY3Ni1iMzI1LTBhMDdiZmY1ZjRiNiIsImlhdCI6MTcyMTIyMzMyOSwiZXhwIjoxNzIxMjI4NzI5fQ.4Ns9JhxEcHUd95HvdEBgFNPQ9ox-d0DkMgVz8KOhIRM
 ###
 
-# Get user by ID
+# Get user by email
 GET http://localhost:4000/api/users/user@notfound.com HTTP/1.1
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NjU4NTVlMWQxNmQwM2UxOGE4MWIxOGYiLCJlbWFpbCI6InVzZXJAbm90Zm91bmQuY29tIiwiaWF0IjoxNzIxMjIzNzY4LCJleHAiOjE3MjEyMjM4Njh9.5MZr4qjhMFfPHCsuvBKBCmAKTLyT1AFcgZEOZ3qbWAQ

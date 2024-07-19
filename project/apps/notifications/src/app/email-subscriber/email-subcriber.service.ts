@@ -37,10 +37,13 @@ export class EmailSubscriberService {
 
     const newDate = new Date();
 
-    return await this.emailSubscriberRepository.setNewUpdateDate(email, newDate);
+    return await this.emailSubscriberRepository.setNewUpdateDate(
+      subscriber,
+      newDate
+    );
   }
 
-  public async getSubscriber(id: string) {
-    return await this.emailSubscriberRepository.findById(id);
+  public async getSubscriber(email: string) {
+    return await this.emailSubscriberRepository.findByEmail(email);
   }
 }

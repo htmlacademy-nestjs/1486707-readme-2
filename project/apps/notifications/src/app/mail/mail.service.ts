@@ -2,7 +2,10 @@ import { MailerService } from '@nestjs-modules/mailer';
 import { Inject, Injectable } from '@nestjs/common';
 import { ConfigType } from '@nestjs/config';
 
-import { EMAIL_ADD_SUBSCRIBER_SUBJECT } from './mail.constants';
+import {
+  EMAIL_ADD_SUBSCRIBER_SUBJECT,
+  NEW_PUBLICATIONS_SENT,
+} from './mail.constants';
 import { Article, Subscriber } from '@project/shared/app/types';
 import { NotifyConfig } from '@project/shared/config/notifications';
 
@@ -33,7 +36,7 @@ export class MailService {
     await this.mailerService.sendMail({
       from: this.notifyConfig.mail.from,
       to: subscriber.email,
-      subject: EMAIL_ADD_SUBSCRIBER_SUBJECT,
+      subject: NEW_PUBLICATIONS_SENT,
       template: './new-publications',
       context: {
         user: `${subscriber.name}`,

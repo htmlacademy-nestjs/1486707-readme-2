@@ -1,7 +1,7 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Param } from '@nestjs/common';
 import { RabbitSubscribe } from '@golevelup/nestjs-rabbitmq';
 
-import { RabbitRouting } from '@project/shared/app/types';
+import { Article, RabbitRouting, Subscriber } from '@project/shared/app/types';
 import { EmailSubscriberService } from './email-subcriber.service';
 import { CreateSubscriberDto } from './dto/create-subscriber.dto';
 import { MailService } from '../mail/mail.service';
@@ -23,8 +23,25 @@ export class EmailSubscriberController {
     await this.mailService.sendNotifyNewSubscriber(subscriber);
   }
 
-  @Get('/:id')
-  public async getSubscriber(id: string) {
-    return await this.subscriberService.getSubscriber(id);
+  @RabbitSubscribe({
+    exchange: 'readme.notifications',
+    routingKey: RabbitRouting.SendNewPublication,
+    queue: 'readme.notifications.income',
+  })
+  public async sendLatestPublications({
+    subscriber,
+    publications,
+  }: {
+    subscriber: Subscriber;
+    publications: Article[];
+  }) {
+    await this.subscriberService.updateSubscriberLastUpdate(subscriber);
+
+    await this.mailService.sendNewPublication(subscriber, publications);
+  }
+
+  @Get('/:email')
+  public async getSubscriber(@Param('email') email: string) {
+    return await this.subscriberService.getSubscriber(email);
   }
 }

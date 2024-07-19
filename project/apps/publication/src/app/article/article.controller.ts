@@ -20,12 +20,14 @@ import { JoiValidationPipe } from '@project/shared/core';
 import { ArticleQuery } from '@project/shared/app/types';
 import { RepostArticleDto } from './dto/repost-article.dto';
 import { UpdateArticleLikesDto } from '../article-likes/dto/update-article-likes.dto';
+import { NotifyService } from '../notify/notify.service';
 
 @Controller('article')
 export class ArticleController {
   constructor(
     private readonly articleService: ArticleService,
-    private readonly articleLikesService: ArticleLikesService
+    private readonly articleLikesService: ArticleLikesService,
+    private readonly notifyService: NotifyService
   ) {}
 
   @ApiResponse({
@@ -60,6 +62,20 @@ export class ArticleController {
       ),
     };
     return result;
+  }
+
+  @Post('/get-latest')
+  public async getLatestArticles(@Body() body) {
+    const { subscriber } = body;
+
+    const latestArticles = await this.articleService.getLatestArticles(
+      subscriber.lastUpdate
+    );
+
+    await this.notifyService.sendLatestPublications({
+      subscriber,
+      publications: latestArticles,
+    });
   }
 
   @ApiResponse({

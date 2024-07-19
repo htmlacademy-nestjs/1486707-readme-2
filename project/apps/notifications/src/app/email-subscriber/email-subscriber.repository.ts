@@ -5,6 +5,7 @@ import { Model } from 'mongoose';
 import { BaseMongoRepository } from '@project/shared/core';
 import { EmailSubscriberEntity } from './email-subscriber.entity';
 import { EmailSubscriberModel } from './email-subscriber.model';
+import { Subscriber } from '@project/shared/app/types';
 
 @Injectable()
 export class EmailSubscriberRepository extends BaseMongoRepository<
@@ -26,16 +27,15 @@ export class EmailSubscriberRepository extends BaseMongoRepository<
   }
 
   public async setNewUpdateDate(
-    email: string,
+    subscriber: Subscriber,
     newDate: Date
   ): Promise<EmailSubscriberEntity | null> {
-    const filter = { email: email };
-    const update = { lastUpdate: newDate };
+    const filter = { email: subscriber.email };
+    const update = { ...subscriber, lastUpdate: newDate };
 
     const document = await this.model
       .findOneAndUpdate(filter, update, {
         new: true,
-        upsert: true,
       })
       .exec();
 

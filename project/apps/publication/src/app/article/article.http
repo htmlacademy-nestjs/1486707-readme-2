@@ -1,17 +1,18 @@
 # Get article by Id
 
-GET http://localhost:3000/api/article/6d308040-96a2-4162-bea6-2338e9976540 HTTP/1.1
+GET http://localhost:3005/api/article/6d308040-96a2-4162-bea6-2338e9976540 HTTP/1.1
 
 ###
 
 # Create a new article
 
-POST http://localhost:3000/api/article/create HTTP/1.1
+POST http://localhost:3005/api/article/create HTTP/1.1
 Content-Type: application/json
 
 {
   "type": "link",
-  "authorId": "random author",
+  "userId": "669a1dab2ded7feff437a564",
+  "authorId": "669a1dab2ded7feff437a564",
   "tags": ["39614113-7ad5-45b6-8093-06455437e1e2"],
   "articleData": {
     "link": "test new article link string",
@@ -23,13 +24,13 @@ Content-Type: application/json
 
 # Delete an article by id
 
-DELETE http://localhost:3000/api/article/delete/8296c3c2-60fa-4b5a-aca9-539f9a6da4fe HTTP/1.1
+DELETE http://localhost:3005/api/article/delete/8296c3c2-60fa-4b5a-aca9-539f9a6da4fe HTTP/1.1
 
 ###
 
 # Update an article by id
 
-PATCH http://localhost:3000/api/article/update/ab04593b-da99-4fe3-8b4b-e06d82e2efdd HTTP/1.1
+PATCH http://localhost:3005/api/article/update/ab04593b-da99-4fe3-8b4b-e06d82e2efdd HTTP/1.1
 Content-Type: application/json
 
 {
@@ -46,19 +47,19 @@ Content-Type: application/json
 
 # Get articles
 
-GET http://localhost:3000/api/article/find?filterByType=video&sortByType=comments HTTP/1.1
+GET http://localhost:3005/api/article/find?filterByType=video&sortByType=comments HTTP/1.1
 
 ###
 
 # Search articles title
 
-GET http://localhost:3000/api/article/search?search=video HTTP/1.1
+GET http://localhost:3005/api/article/search?search=video HTTP/1.1
 
 ###
 
 # Repost an article
 
-POST http://localhost:3000/api/article/repost HTTP/1.1
+POST http://localhost:3005/api/article/repost HTTP/1.1
 Content-Type: application/json
 
 {
@@ -70,7 +71,7 @@ Content-Type: application/json
 
 # Like an article
 
-POST http://localhost:3000/api/article/like HTTP/1.1
+POST http://localhost:3005/api/article/like HTTP/1.1
 Content-Type: application/json
 
 {

@@ -8,6 +8,7 @@ import {
   Patch,
   Post,
   Query,
+  Req,
   UseFilters,
   UseGuards,
   UseInterceptors,
@@ -33,7 +34,10 @@ export class ArticlesController {
   @UseInterceptors(UserIdInterceptor)
   @Post('/create')
   public async create(@Body() dto: CreateArticleDto & { userId: string }) {
-    dto.authorId = dto.userId;
+    dto['authorId'] = dto.userId;
+
+    delete dto.userId;
+
     const { data: articleData } = await this.httpService.axiosRef.post(
       `${ApplicationServiceURL.Articles}/create`,
       dto
@@ -45,14 +49,13 @@ export class ArticlesController {
   @UseInterceptors(UserIdInterceptor)
   @Post('/repost')
   public async repost(
-    @Param('articleId') articleId: string,
-    @Body() { userId }
+    @Body() { userId, articleId }
   ) {
     const { data } = await this.httpService.axiosRef.post(
       `${ApplicationServiceURL.Articles}/repost`,
       {
-        userId,
         articleId,
+        authorId: userId,
       }
     );
     return data;
@@ -66,7 +69,7 @@ export class ArticlesController {
       `${ApplicationServiceURL.Articles}/like`,
       {
         articleId: id,
-        userId,
+        authorId: userId,
       }
     );
     return data;
@@ -92,6 +95,31 @@ export class ArticlesController {
       }
     );
     return data;
+  }
+
+  @UseGuards(CheckAuthGuard)
+  @UseInterceptors(UserIdInterceptor)
+  @Get('/send-latest')
+  public async sendLatestArticles(@Req() req: Request, @Body() { userId }) {
+    const { data: userData } = await this.httpService.axiosRef.get(
+      `${ApplicationServiceURL.Users}/${userId}`,
+      {
+        headers: {
+          Authorization: req.headers['authorization'],
+        },
+      }
+    );
+
+    const { data: subscriberData } = await this.httpService.axiosRef.get(
+      `${ApplicationServiceURL.Notifications}/${userData.email}`
+    );
+
+    await this.httpService.axiosRef.post(
+      `${ApplicationServiceURL.Articles}/get-latest`,
+      {
+        subscriber: subscriberData,
+      }
+    );
   }
 
   @Get('/:id')
