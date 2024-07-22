@@ -4,7 +4,7 @@ import { ArticleModule } from './article/article.module';
 import { PublicationTagModule } from './publication-tag/publication-tag.module';
 import { ArticleLikesModule } from './article-likes/artilce-likes.module';
 
-import { ConfigUserModule } from '@project/shared/config/user';
+import { ConfigPublicationModule } from '@project/shared/publication/models';
 import { NotifyModule } from './notify/notify.module';
 
 @Module({
@@ -13,7 +13,7 @@ import { NotifyModule } from './notify/notify.module';
     CommentModule,
     PublicationTagModule,
     ArticleLikesModule,
-    ConfigUserModule,
+    ConfigPublicationModule,
     NotifyModule,
   ],
   controllers: [],

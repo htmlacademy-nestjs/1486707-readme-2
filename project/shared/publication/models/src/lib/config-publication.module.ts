@@ -3,7 +3,7 @@ import { ConfigModule } from '@nestjs/config';
 import applicationConfig from './app.config';
 import rabbitConfig from './rabbit.config';
 
-const ENV_USERS_FILE_PATH = 'apps/publication/publication.env';
+const ENV_PUBLICATION_FILE_PATH = 'apps/publication/publication.env';
 
 @Module({
   imports: [
@@ -11,8 +11,8 @@ const ENV_USERS_FILE_PATH = 'apps/publication/publication.env';
       isGlobal: true,
       cache: true,
       load: [applicationConfig, rabbitConfig],
-      envFilePath: ENV_USERS_FILE_PATH,
+      envFilePath: ENV_PUBLICATION_FILE_PATH,
     }),
   ],
 })
-export class ConfigUserModule {}
+export class ConfigPublicationModule {}

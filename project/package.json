@@ -4,7 +4,8 @@
   "license": "MIT",
   "scripts": {
     "serve-all": "nx run-many --parallel --maxParallel=5  --target=serve --projects=api-gateway,file-vault,publication,user,notifications",
-    "format-prisma-schema": "npx prisma format --schema ./shared/publication/models/prisma/schema.prisma"
+    "format-prisma-schema": "npx prisma format --schema ./shared/publication/models/prisma/schema.prisma",
+    "docker-compose-all": "nx run file-vault:docker:compose && nx run user:docker:compose && nx run notifications:docker:compose && nx run publication:docker:compose"
   },
   "private": true,
   "dependencies": {

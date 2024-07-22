@@ -19,11 +19,12 @@ import { UserIdInterceptor } from './interceptors/userid.interceptor';
 import { CreateArticleDto } from './dto/publications/create-article.dto';
 import { ApplicationServiceURL } from '@project/shared/config/api-gateway';
 import { HttpService } from '@nestjs/axios';
-import { ArticleQuery } from '@project/shared/app/types';
+import { ArticleQuery, PhotoArticleData } from '@project/shared/app/types';
 import { UpdateArticleDto } from './dto/publications/update-article.dto';
 import { CreateTagDto } from './dto/publications/create-tag.dto';
 import { UpdateTagDto } from './dto/publications/update-tag.dto';
 import { CreateCommentDto } from './dto/publications/create-comment.dto';
+import { ArticleTypes } from './api.constants';
 
 @Controller('articles')
 @UseFilters(AxiosExceptionFilter)
@@ -38,6 +39,19 @@ export class ArticlesController {
 
     delete dto.userId;
 
+    if (dto.type === ArticleTypes.PHOTO) {
+      const { photo } = dto.articleData as PhotoArticleData;
+      const { data: fileData } = await this.httpService.axiosRef.post(
+        `${ApplicationServiceURL.Files}/upload`,
+        photo
+      );
+
+      dto.articleData = {
+        ...dto.articleData,
+        photo: fileData.id,
+      };
+    }
+
     const { data: articleData } = await this.httpService.axiosRef.post(
       `${ApplicationServiceURL.Articles}/create`,
       dto
@@ -48,9 +62,7 @@ export class ArticlesController {
   @UseGuards(CheckAuthGuard)
   @UseInterceptors(UserIdInterceptor)
   @Post('/repost')
-  public async repost(
-    @Body() { userId, articleId }
-  ) {
+  public async repost(@Body() { userId, articleId }) {
     const { data } = await this.httpService.axiosRef.post(
       `${ApplicationServiceURL.Articles}/repost`,
       {
@@ -127,6 +139,15 @@ export class ArticlesController {
     const { data } = await this.httpService.axiosRef.get(
       `${ApplicationServiceURL.Articles}/${id}`
     );
+
+    if (data.type === ArticleTypes.PHOTO) {
+      const { data: fileData } = await this.httpService.axiosRef.get(
+        `${ApplicationServiceURL.Files}/${data.articleData.photo}`
+      );
+
+      data.articleData.photo = fileData;
+    }
+
     return data;
   }
 
