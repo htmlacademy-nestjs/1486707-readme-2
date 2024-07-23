@@ -1,9 +1,8 @@
-import { Controller, Get, HttpStatus, Param, UseGuards } from '@nestjs/common';
+import { Controller, Get, HttpStatus, Param } from '@nestjs/common';
 import { AuthorService } from './author.service';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { fillDto } from '@project/shared/helpers';
 import { AuthorRdo } from './rdo/author.rdo';
-import { JwtAuthGuard } from '../authentication/guards/jwt-auth.guard';
 
 @ApiTags('authors')
 @Controller('author')
@@ -15,7 +14,6 @@ export class AuthorController {
     status: HttpStatus.OK,
     description: 'User found',
   })
-  @UseGuards(JwtAuthGuard)
   @Get(':id')
   public async show(@Param('id') id: string) {
     const existUser = await this.authorService.getAuthor(id);

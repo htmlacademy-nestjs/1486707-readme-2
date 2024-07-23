@@ -4,27 +4,32 @@ import {
   Delete,
   ForbiddenException,
   Get,
+  MaxFileSizeValidator,
   Param,
+  ParseFilePipe,
   Patch,
   Post,
   Query,
   Req,
+  UploadedFile,
   UseFilters,
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
+import FormData from 'form-data';
 import { AxiosExceptionFilter } from './filters/axios-exception.filter';
 import { CheckAuthGuard } from './guards/check-auth.guard';
 import { UserIdInterceptor } from './interceptors/userid.interceptor';
 import { CreateArticleDto } from './dto/publications/create-article.dto';
 import { ApplicationServiceURL } from '@project/shared/config/api-gateway';
 import { HttpService } from '@nestjs/axios';
-import { ArticleQuery, PhotoArticleData } from '@project/shared/app/types';
+import { ArticleQuery } from '@project/shared/app/types';
 import { UpdateArticleDto } from './dto/publications/update-article.dto';
 import { CreateTagDto } from './dto/publications/create-tag.dto';
 import { UpdateTagDto } from './dto/publications/update-tag.dto';
 import { CreateCommentDto } from './dto/publications/create-comment.dto';
 import { ArticleTypes } from './api.constants';
+import { AnyFilesInterceptor } from '@nestjs/platform-express';
 
 @Controller('articles')
 @UseFilters(AxiosExceptionFilter)
@@ -33,17 +38,36 @@ export class ArticlesController {
 
   @UseGuards(CheckAuthGuard)
   @UseInterceptors(UserIdInterceptor)
+  @UseInterceptors(AnyFilesInterceptor())
   @Post('/create')
-  public async create(@Body() dto: CreateArticleDto & { userId: string }) {
+  public async create(
+    @Body() dto: CreateArticleDto & { userId: string },
+    @UploadedFile(
+      new ParseFilePipe({
+        validators: [new MaxFileSizeValidator({ maxSize: 1000000 })],
+      })
+    )
+    photoData: Express.Multer.File
+  ) {
     dto['authorId'] = dto.userId;
 
     delete dto.userId;
 
-    if (dto.type === ArticleTypes.PHOTO) {
-      const { photo } = dto.articleData as PhotoArticleData;
+    if (dto.type === ArticleTypes.PHOTO && photoData) {
+      const formData = new FormData();
+      formData.append('user', dto.userId);
+      formData.append('file', photoData.buffer, {
+        filename: photoData.originalname,
+      });
+
       const { data: fileData } = await this.httpService.axiosRef.post(
         `${ApplicationServiceURL.Files}/upload`,
-        photo
+        formData,
+        {
+          headers: {
+            ...formData.getHeaders(),
+          },
+        }
       );
 
       dto.articleData = {
@@ -95,6 +119,15 @@ export class ArticlesController {
         params: { ...query },
       }
     );
+
+    if (data.type === ArticleTypes.PHOTO) {
+      const { data: fileData } = await this.httpService.axiosRef.get(
+        `${ApplicationServiceURL.Files}/${data.articleData.photo}`
+      );
+
+      data.articleData.photo = fileData;
+    }
+
     return data;
   }
 
