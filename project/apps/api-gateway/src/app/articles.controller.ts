@@ -45,6 +45,7 @@ export class ArticlesController {
     @UploadedFile(
       new ParseFilePipe({
         validators: [new MaxFileSizeValidator({ maxSize: 1000000 })],
+        fileIsRequired: false,
       })
     )
     photoData: Express.Multer.File
@@ -184,24 +185,48 @@ export class ArticlesController {
     return data;
   }
 
+  @UseGuards(CheckAuthGuard)
+  @UseInterceptors(UserIdInterceptor)
   @Patch('/update/:id')
   public async updateArticle(
     @Param('id') id: string,
-    @Body() dto: UpdateArticleDto
+    @Body() dto: UpdateArticleDto & { userId: string }
   ) {
-    const { data } = await this.httpService.axiosRef.patch(
+    const { data: article } = await this.httpService.axiosRef.get(
+      `${ApplicationServiceURL.Articles}/${id}`
+    );
+
+    if (article.authorId !== dto.userId) {
+      throw new ForbiddenException(
+        'This author cannot delete this publication'
+      );
+    }
+    delete dto.userId;
+    const { data: updatedData } = await this.httpService.axiosRef.patch(
       `${ApplicationServiceURL.Articles}/update/${id}`,
       dto
     );
-    return data;
+    return updatedData;
   }
 
+  @UseGuards(CheckAuthGuard)
+  @UseInterceptors(UserIdInterceptor)
   @Delete('/delete/:id')
-  public async deleteArticle(@Param('id') id: string) {
-    const { data } = await this.httpService.axiosRef.delete(
+  public async deleteArticle(@Param('id') id: string, @Body() { userId }) {
+    const { data: article } = await this.httpService.axiosRef.get(
+      `${ApplicationServiceURL.Articles}/${id}`
+    );
+
+    if (article.authorId !== userId) {
+      throw new ForbiddenException(
+        'This author cannot delete this publication'
+      );
+    }
+
+    const { data: deletedData } = await this.httpService.axiosRef.delete(
       `${ApplicationServiceURL.Articles}/delete/${id}`
     );
-    return data;
+    return deletedData;
   }
 
   // Tags

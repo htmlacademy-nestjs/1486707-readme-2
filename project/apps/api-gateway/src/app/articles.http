@@ -7,7 +7,7 @@ GET http://localhost:4000/api/articles/18c449a9-e9f1-4e6a-b06d-4b31ad73a096 HTTP
 # Create a new article
 
 POST http://localhost:4000/api/articles/create HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NjlhMWRhYjJkZWQ3ZmVmZjQzN2E1NjQiLCJlbWFpbCI6InVzZXJAbm90Zm91bmQyLmNvbSIsImlhdCI6MTcyMTM4ODI2MywiZXhwIjoxNzIxMzg4MzYzfQ.6U2Gc5bJZb9v_QGxPJURuRjQ32-kKqNUxcRdyACeRcA
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NjlhMWRhYjJkZWQ3ZmVmZjQzN2E1NjQiLCJlbWFpbCI6InVzZXJAbm90Zm91bmQyLmNvbSIsImlhdCI6MTcyMTgxMjMyMywiZXhwIjoxNzIxODEzMzIzfQ.sDsMnk8v6vAvJ8zfp4ibmRDlq86nXbYAiwtxiuH0auk
 Content-Type: application/json
 
 {
@@ -23,13 +23,15 @@ Content-Type: application/json
 
 # Delete an article by id
 
-DELETE http://localhost:4000/api/articles/delete/18c449a9-e9f1-4e6a-b06d-4b31ad73a096 HTTP/1.1
+DELETE http://localhost:4000/api/articles/delete/d55b688a-3432-4940-8379-b92427cbd77c HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NjlhMWRhYjJkZWQ3ZmVmZjQzN2E1NjQiLCJlbWFpbCI6InVzZXJAbm90Zm91bmQyLmNvbSIsImlhdCI6MTcyMTgxMjMyMywiZXhwIjoxNzIxODEzMzIzfQ.sDsMnk8v6vAvJ8zfp4ibmRDlq86nXbYAiwtxiuH0auk
 
 ###
 
 # Update an article by id
 
-PATCH http://localhost:4000/api/articles/update/2b4af5df-3099-4ae3-bec0-96a6c7de407c HTTP/1.1
+PATCH http://localhost:4000/api/articles/update/d55b688a-3432-4940-8379-b92427cbd77c HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NjlhMWRhYjJkZWQ3ZmVmZjQzN2E1NjQiLCJlbWFpbCI6InVzZXJAbm90Zm91bmQyLmNvbSIsImlhdCI6MTcyMTgxMjMyMywiZXhwIjoxNzIxODEzMzIzfQ.sDsMnk8v6vAvJ8zfp4ibmRDlq86nXbYAiwtxiuH0auk
 Content-Type: application/json
 
 {
