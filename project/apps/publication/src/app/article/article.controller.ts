@@ -16,14 +16,18 @@ import { fillDto } from '@project/shared/helpers';
 import { CreateArticleDto } from './dto/create-article.dto';
 import { ArticleLikesService } from '../article-likes/article-likes.service';
 import { UpdateArticleDto } from './dto/update-article.dto';
-import { ArticleQuery } from './article.types';
 import { JoiValidationPipe } from '@project/shared/core';
+import { ArticleQuery } from '@project/shared/app/types';
+import { RepostArticleDto } from './dto/repost-article.dto';
+import { UpdateArticleLikesDto } from '../article-likes/dto/update-article-likes.dto';
+import { NotifyService } from '../notify/notify.service';
 
 @Controller('article')
 export class ArticleController {
   constructor(
     private readonly articleService: ArticleService,
-    private readonly articleLikesService: ArticleLikesService
+    private readonly articleLikesService: ArticleLikesService,
+    private readonly notifyService: NotifyService
   ) {}
 
   @ApiResponse({
@@ -60,6 +64,20 @@ export class ArticleController {
     return result;
   }
 
+  @Post('/get-latest')
+  public async getLatestArticles(@Body() body) {
+    const { subscriber } = body;
+
+    const latestArticles = await this.articleService.getLatestArticles(
+      subscriber.lastUpdate
+    );
+
+    await this.notifyService.sendLatestPublications({
+      subscriber,
+      publications: latestArticles,
+    });
+  }
+
   @ApiResponse({
     type: ArticleRdo,
     status: HttpStatus.OK,
@@ -73,7 +91,7 @@ export class ArticleController {
 
   @ApiResponse({
     status: HttpStatus.CREATED,
-    description: 'A new comment has been successfully created',
+    description: 'A new article has been successfully created',
   })
   @Post('/create')
   public async create(@Body(JoiValidationPipe) dto: CreateArticleDto) {
@@ -97,5 +115,26 @@ export class ArticleController {
   ) {
     const updatedArticle = await this.articleService.updateArticle(id, dto);
     return fillDto(ArticleRdo, updatedArticle.toPOJO());
+  }
+
+  @Post('/repost')
+  public async repost(@Body(JoiValidationPipe) dto: RepostArticleDto) {
+    const { articleId, authorId } = dto;
+    const repostedArticle = await this.articleService.repostArticle(
+      authorId,
+      articleId
+    );
+    return repostedArticle;
+  }
+
+  @Post('/like')
+  public async likeArticle(@Body() dto: UpdateArticleLikesDto) {
+    const { articleId, authorId } = dto;
+    const newLikes = await this.articleLikesService.updateArticleLikes(
+      articleId,
+      authorId
+    );
+
+    return newLikes;
   }
 }

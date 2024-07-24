@@ -1,5 +1,5 @@
 import { Prisma } from '@prisma/client';
-import { ArticleSortType } from './article.types';
+import { ArticleSortType } from '@project/shared/app/types';
 
 export const articleSortToPrismaSort = (
   sortByType: string,
@@ -12,7 +12,7 @@ export const articleSortToPrismaSort = (
   const prismaOrderBy: Prisma.ArticleOrderByWithRelationInput = {};
 
   if (sortByType === ArticleSortType.DATE) {
-    prismaOrderBy.createdAt = sortDirection;
+    prismaOrderBy.publishedAt = sortDirection;
   }
 
   if (sortByType === ArticleSortType.COMMENTS) {

@@ -138,7 +138,9 @@ async function seedDb(prismaClient: PrismaClient) {
       update: {},
       create: {
         id: article.id,
+        originalId: article.id,
         authorId: article.authorId,
+        originalAuthorId: article.authorId,
         articleDataIds: { create: article.articleData },
         type: article.type,
         isRepost: article.isRepost,

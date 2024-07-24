@@ -4,9 +4,12 @@ CREATE TYPE "ArticleType" AS ENUM ('video', 'text', 'quote', 'photo', 'link');
 -- CreateTable
 CREATE TABLE "articles" (
     "id" TEXT NOT NULL,
+    "original_id" TEXT,
     "author_id" TEXT NOT NULL,
+    "original_author_id" TEXT NOT NULL,
     "type" "ArticleType" NOT NULL,
     "is_repost" BOOLEAN,
+    "published_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
 

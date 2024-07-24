@@ -1,0 +1,146 @@
+# Get article by Id
+
+GET http://localhost:4000/api/articles/18c449a9-e9f1-4e6a-b06d-4b31ad73a096 HTTP/1.1
+
+###
+
+# Create a new article
+
+POST http://localhost:4000/api/articles/create HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NjlhMWRhYjJkZWQ3ZmVmZjQzN2E1NjQiLCJlbWFpbCI6InVzZXJAbm90Zm91bmQyLmNvbSIsImlhdCI6MTcyMTgxMjMyMywiZXhwIjoxNzIxODEzMzIzfQ.sDsMnk8v6vAvJ8zfp4ibmRDlq86nXbYAiwtxiuH0auk
+Content-Type: application/json
+
+{
+  "type": "link",
+  "tags": ["39614113-7ad5-45b6-8093-06455437e1e2"],
+  "articleData": {
+    "link": "test new article link string",
+    "description": "test new article link description"
+  }
+}
+
+###
+
+# Delete an article by id
+
+DELETE http://localhost:4000/api/articles/delete/d55b688a-3432-4940-8379-b92427cbd77c HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NjlhMWRhYjJkZWQ3ZmVmZjQzN2E1NjQiLCJlbWFpbCI6InVzZXJAbm90Zm91bmQyLmNvbSIsImlhdCI6MTcyMTgxMjMyMywiZXhwIjoxNzIxODEzMzIzfQ.sDsMnk8v6vAvJ8zfp4ibmRDlq86nXbYAiwtxiuH0auk
+
+###
+
+# Update an article by id
+
+PATCH http://localhost:4000/api/articles/update/d55b688a-3432-4940-8379-b92427cbd77c HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NjlhMWRhYjJkZWQ3ZmVmZjQzN2E1NjQiLCJlbWFpbCI6InVzZXJAbm90Zm91bmQyLmNvbSIsImlhdCI6MTcyMTgxMjMyMywiZXhwIjoxNzIxODEzMzIzfQ.sDsMnk8v6vAvJ8zfp4ibmRDlq86nXbYAiwtxiuH0auk
+Content-Type: application/json
+
+{
+  "type": "link",
+  "authorId": "random updated authordsa",
+  "tags": ["39614113-7ad5-45b6-8093-06455437e1e2", "767e2701-7be7-46d6-b401-7d8aa2f6d13d"],
+  "articleData": {
+    "link": "test updated article link string",
+    "description": "test updated article link description"
+  }
+}
+
+###
+
+# Get articles
+
+GET http://localhost:4000/api/articles/find?filterByType=video&sortByType=comments HTTP/1.1
+
+###
+
+# Search articles title
+
+GET http://localhost:4000/api/articles/search?search=video HTTP/1.1
+
+###
+
+# Like an article
+
+POST http://localhost:4000/api/articles/like/4c7ecf08-2475-421c-8e20-104996b722c9 HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NjlhMWRhYjJkZWQ3ZmVmZjQzN2E1NjQiLCJlbWFpbCI6InVzZXJAbm90Zm91bmQyLmNvbSIsImlhdCI6MTcyMTM4ODM2NywiZXhwIjoxNzIxMzg4NDY3fQ.cOOT43Qm4YQiFbJQM4CSxV-yuxK6SQeuMqMIMJBTe5o
+
+###
+
+
+# Repost an article
+
+POST http://localhost:4000/api/articles/repost HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NjlhMWRhYjJkZWQ3ZmVmZjQzN2E1NjQiLCJlbWFpbCI6InVzZXJAbm90Zm91bmQyLmNvbSIsImlhdCI6MTcyMTM4ODU2NSwiZXhwIjoxNzIxMzg4NjY1fQ.LPdYTqgVbryV349PfShnesuzFuRMWD9HIez1CFDHl2A
+Content-Type: application/json
+
+{
+  "authorId": "665855e1d16d03e18a81b18f",
+  "articleId": "4c7ecf08-2475-421c-8e20-104996b722c9"
+}
+
+###
+
+
+# Send latest articles
+
+GET http://localhost:4000/api/articles/send-latest HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NjlhMWRhYjJkZWQ3ZmVmZjQzN2E1NjQiLCJlbWFpbCI6InVzZXJAbm90Zm91bmQyLmNvbSIsImlhdCI6MTcyMTM4NDUwMywiZXhwIjoxNzIxMzg0NjAzfQ.e_M03V4t5MjKS-bJqo5kUeoxmEEptA1MwrZGkcz0eCU
+
+# Get tag by Id
+
+GET http://localhost:4000/api/articles/get-tag/efd775e2-df55-4e0e-a308-58249f5ea202 HTTP/1.1
+
+###
+
+# Create a new category
+
+POST http://localhost:4000/api/articles/create-tag HTTP/1.1
+Content-Type: application/json
+
+{
+  "title": "Http created test tag"
+}
+
+###
+
+# Delete a category by id
+
+DELETE http://localhost:4000/api/articles/delete-tag/331cec9c-69d3-4f30-91be-cf6041086e91 HTTP/1.1
+
+###
+
+# Update a category by id
+
+PATCH http://localhost:4000/api/articles/update-tag/efd775e2-df55-4e0e-a308-58249f5ea202 HTTP/1.1
+Content-Type: application/json
+
+{
+  "title": "Http updated tag"
+}
+
+###
+
+# Get comments by article Id
+
+GET http://localhost:4000/api/articles/get-comments/6d308040-96a2-4162-bea6-2338e9976540 HTTP/1.1
+
+###
+
+# Create a new comment
+
+POST http://localhost:4000/api/articles/create-comment HTTP/1.1
+Content-Type: application/json
+
+{
+  "articleId": "6d308040-96a2-4162-bea6-2338e9976540",
+  "authorId": "665855e1d16d03e18a81b18f",
+  "text": "Http created test comment"
+}
+
+###
+
+# Delete a comment by comment id
+
+DELETE http://localhost:4000/api/articles/delete-comment/6e6557e3-e082-4ced-b87f-326ef2c6be13 HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NjlhMWRhYjJkZWQ3ZmVmZjQzN2E1NjQiLCJlbWFpbCI6InVzZXJAbm90Zm91bmQyLmNvbSIsImlhdCI6MTcyMTM4NDUwMywiZXhwIjoxNzIxMzg0NjAzfQ.e_M03V4t5MjKS-bJqo5kUeoxmEEptA1MwrZGkcz0eCU
+
+###

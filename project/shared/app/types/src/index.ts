@@ -10,3 +10,6 @@ export * from './lib/token-payload.interface';
 export * from './lib/stored-file.interface';
 export * from './lib/subscriber.interface';
 export * from './lib/rabbit-routing.enum';
+export * from './lib/jwt-token.interface';
+export * from './lib/refresh-token-payload.interface';
+export * from './lib/request-with-token-payload.interface';

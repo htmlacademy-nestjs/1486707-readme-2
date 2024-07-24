@@ -7,5 +7,5 @@ export class CreateLinkArticleDto {
 
 export const createLinkArticleDtoSchema = Joi.object({
   link: Joi.string().required(),
-  description: Joi.string(),
+  description: Joi.string().max(300),
 }).options({ abortEarly: false });

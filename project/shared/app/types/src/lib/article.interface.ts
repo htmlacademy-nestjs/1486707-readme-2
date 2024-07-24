@@ -60,16 +60,40 @@ export type ArticleData =
   | PhotoArticleData
   | LinkArticleData;
 
+export enum ArticleSortType {
+  DATE = 'date',
+  LIKES = 'likes',
+  COMMENTS = 'comments',
+}
+
+export interface ArticleFilter {
+  filterByType?: ArticleType;
+  filterByAuthor?: string;
+  filterByTags?: string[];
+}
+
+export interface ArticleQuery extends ArticleFilter {
+  limit?: number;
+  take?: number;
+  sortByType?: ArticleSortType;
+  sortDirection?: 'desc' | 'asc';
+  page?: number;
+  search?: string;
+}
+
 export interface Article {
   id?: string;
+  originalId?: string;
   type: ArticleType;
   articleDataIds?: ArticleDataIds;
   articleData?: ArticleData;
   authorId: string;
+  originalAuthorId: string;
   tags?: Tag[];
   likes?: ArticleLikes[];
   comments?: Comment[];
   isRepost?: boolean;
+  publishedAt: Date;
   createdAt?: Date;
   updatedAt?: Date;
 }

@@ -1,9 +1,11 @@
 import {
   Controller,
   Delete,
+  FileTypeValidator,
   Get,
   HttpStatus,
   Param,
+  ParseFilePipe,
   Post,
   UploadedFile,
   UseInterceptors,
@@ -45,7 +47,18 @@ export class FileUploaderController {
   })
   @Post('/upload')
   @UseInterceptors(FileInterceptor('file'))
-  public async uploadFile(@UploadedFile() file: Express.Multer.File) {
+  public async uploadFile(
+    @UploadedFile(
+      new ParseFilePipe({
+        validators: [
+          new FileTypeValidator({
+            fileType: /(image\/jpeg)|(image\/png)|(image\/jpg)/,
+          }),
+        ],
+      })
+    )
+    file: Express.Multer.File
+  ) {
     const fileEntity = await this.fileUploaderService.saveFile(file);
     return fillDto(FileItemRdo, fileEntity.toPOJO());
   }

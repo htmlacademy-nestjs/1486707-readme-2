@@ -1,7 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { ArticleLikesRepository } from './article-likes.repository';
 import { ArticleLikesEntity } from './article-likes.entity';
-import { UpdateArticleLikesDto } from './dto/update-article-likes.dto';
 
 
 @Injectable()
@@ -14,9 +13,9 @@ export class ArticleLikesService {
     return this.articleLikesRepository.findById(id);
   }
 
-  public async updateArticleLikes(id: string, dto: UpdateArticleLikesDto): Promise<ArticleLikesEntity> {
+  public async updateArticleLikes(id: string, authorId: string): Promise<ArticleLikesEntity[]> {
     try {
-        const updatedArticleLikes = await this.articleLikesRepository.update(id, ArticleLikesEntity.fromObject(dto))
+        const updatedArticleLikes = await this.articleLikesRepository.updateArticleLikes(id, authorId)
         return updatedArticleLikes;
     } catch {
         throw new NotFoundException(`Failed updating the ${id} id article likes`);

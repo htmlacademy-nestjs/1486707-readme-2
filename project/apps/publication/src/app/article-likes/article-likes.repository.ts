@@ -22,26 +22,29 @@ export class ArticleLikesRepository extends BasePostgresRepository<
 
   public async updateArticleLikes(
     id: string,
-    entity: ArticleLikesEntity
+    authorId: string
   ): Promise<ArticleLikesEntity[]> {
     const articleLikes = await this.client.articleLikes.findFirst({
-      where: { articleId: id, authorId: entity.authorId },
+      where: { articleId: id, authorId },
     });
 
     if (articleLikes) {
       await this.client.articleLikes.delete({
         where: {
-          articleId_authorId: { articleId: id, authorId: entity.authorId },
+          articleId_authorId: { articleId: id, authorId },
         },
       });
     } else {
       await this.client.articleLikes.create({
-        data: entity,
+        data: {
+          articleId: id,
+          authorId,
+        },
       });
     }
 
     const updatedArticleLikes = await this.findByArticleId(id);
 
-    return updatedArticleLikes;
+    return updatedArticleLikes.map((like) => this.createEntityFromDocument(like));
   }
 }

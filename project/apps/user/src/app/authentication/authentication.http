@@ -1,17 +1,17 @@
 # Create a new user
-POST http://localhost:3000/api/auth/register HTTP/1.1
+POST http://localhost:3004/api/auth/register HTTP/1.1
 Content-Type: application/json
 
 {
-  "email": "user@notfound.com",
-  "name": "Keks",
+  "email": "user3@notfound.com",
+  "name": "Keks4",
   "password": "123456"
 }
 
 ###
 
 # Login user by email and password
-POST http://localhost:3000/api/auth/login HTTP/1.1
+POST http://localhost:3004/api/auth/login HTTP/1.1
 Content-Type: application/json
 
 {
@@ -22,11 +22,24 @@ Content-Type: application/json
 ###
 
 # Change password
-POST http://localhost:3000/api/auth/change HTTP/1.1
+PATCH http://localhost:3004/api/auth/change HTTP/1.1
 Content-Type: application/json
 
 {
-  "newPassword": "654321"
+  "email": "user@notfound.com",
+  "password": "654321",
+  "newPassword": "123456"
 }
+
+###
+
+# Get a new JWT pair
+POST http://localhost:3004/api/auth/refresh HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NjU4NTVlMWQxNmQwM2UxOGE4MWIxOGYiLCJlbWFpbCI6InVzZXJAbm90Zm91bmQuY29tIiwidG9rZW5JZCI6IjcxNWYwMzU0LTAxNzMtNDgxNy04YTZkLTBlYjdhZTIxNmMzNCIsImlhdCI6MTcyMTIyMjU0NywiZXhwIjoxNzIxMjI3OTQ3fQ.fJaqC6mIP_tv2LdGoRjbpIvjna2G4VIPxTi60_OVWsQ
+###
+
+# Check access token
+POST http://localhost:3004/api/auth/check HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NjU4NTVlMWQxNmQwM2UxOGE4MWIxOGYiLCJlbWFpbCI6InVzZXJAbm90Zm91bmQuY29tIiwiaWF0IjoxNzIxMjIwNDgyLCJleHAiOjE3MjEyMjA0OTJ9.H3hRo51vTRC9stlMzMKisDf80LjxEwHzGC7YvCmq3TA
 
 ###

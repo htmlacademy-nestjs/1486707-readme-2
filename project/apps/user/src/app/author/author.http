@@ -1,5 +1,4 @@
 # Get user by ID
-GET http://localhost:3000/api/user/ed84b75c-31a5-4348-99dc-7fd78e977e12 HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InVzZXJAbm90Zm91bmQuY29tIiwibmFtZSI6Iktla3MiLCJyb2xlIjoiYXV0aG9yIiwic3Vic2NyaXB0aW9ucyI6W10sImlhdCI6MTcxNzE0MzA1OSwiZXhwIjoxNzE3MTQzMDU5fQ._Zxu23AyP12iZyE5zXOqnmnKQXDWOG4LkcQVvJms0Nc
+GET http://localhost:3004/api/author/user@notfound.com HTTP/1.1
 
 ###

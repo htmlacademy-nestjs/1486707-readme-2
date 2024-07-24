@@ -10,7 +10,7 @@ export const updateArticleLikesDtoSchema = Joi.object({
 @ValidateViaJoi(updateArticleLikesDtoSchema)
 export class UpdateArticleLikesDto {
   @ApiProperty({
-    description: 'Publication id which the like relates to',
+    description: 'Article id which the like relates to',
     example: 'a12',
   })
   public articleId: string;

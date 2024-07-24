@@ -7,4 +7,4 @@ export const ArticleTypes = {
   LINK: 'link',
   PHOTO: 'photo',
   QUOTE: 'quote',
-};
+} as const;

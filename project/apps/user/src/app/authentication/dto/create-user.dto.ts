@@ -4,9 +4,9 @@ import Joi from 'joi';
 
 export const createUserDtoSchema = Joi.object({
   email: Joi.string().email().required(),
-  password: Joi.string().required(),
-  name: Joi.string().required(),
-  avatar: Joi.string(),
+  password: Joi.string().min(6).max(12).required(),
+  name: Joi.string().min(3).max(50).required(),
+  avatar: Joi.binary().max(500000),
 }).options({ abortEarly: false });
 
 @ValidateViaJoi(createUserDtoSchema)

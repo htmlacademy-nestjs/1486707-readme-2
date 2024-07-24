@@ -20,7 +20,9 @@ export abstract class BaseMongoRepository<
       return null;
     }
 
-    return this.createEntity(document.toObject({ versionKey: false }));
+    return this.createEntity(
+      document.toObject({ getters: true, versionKey: false })
+    );
   }
 
   public async findById(id: EntitiyType['id']): Promise<EntitiyType | null> {
@@ -48,7 +50,7 @@ export abstract class BaseMongoRepository<
       .exec();
 
     if (!updateDocument) {
-      throw new NotFoundException(`Entity withe id ${id} not found`);
+      throw new NotFoundException(`Entity with id ${id} not found`);
     }
 
     return entity;

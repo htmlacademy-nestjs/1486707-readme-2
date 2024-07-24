@@ -9,7 +9,13 @@ export class ArticleRdo {
   public id: string;
 
   @Expose()
+  public originalId: string;
+
+  @Expose()
   public authorId: string;
+
+  @Expose()
+  public originalAuthorId: string;
 
   @Expose()
   public type: ArticleType;
@@ -28,4 +34,7 @@ export class ArticleRdo {
 
   @Expose()
   public isRepost: boolean;
+
+  @Expose()
+  public publishedAt: Date;
 }
